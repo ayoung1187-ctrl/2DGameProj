@@ -1,12 +1,17 @@
 /* 
  * Purpose: This MonoBehavior class has the purpose of deciding how the handling of all interactable, buildable objects works in this game.
+ * 
  * Attached To: Main Camera
- * 
- * Macro-Scale: The objects (at this point in development) should be click-and-draggable using the left-mouse button.
- *              When clicked on, the selected object should pivot from the cursor. Appropriate collision should be handled by Unity.
- * 
- * Code-Scale: This class takes advantage of Unity's input system package and uses it alongside Collider2D and TargetJoint2D objects.
- *             Add to this
+ *             
+ * Class Function: This class will respond to a left-click by finding what object, if any, is overlapping with the map at that point.
+ *                 If such an object exists, it'll change it's body type to kinematic and change its position to match the mouse as it moves.
+ *                 Additionally, if right-click or R is held during this, the object will rotate at a constant speed.
+ *                 When the left-click is released, the object's body type will change back to dynamic and the reference will be cleared.
+ *             
+ * Last Edited: 3/19/26
+ *             
+ * Edit 3/19/26: I realized I don't know if I want joint physics for dragging, so I updated this class to have drag be kinematic.
+ *               The plan is to make the objects kinematic whilst on the conveyor belt and during drag, and dynamic otherwise
  */
 
 using UnityEngine;
@@ -18,23 +23,22 @@ public class InteractObjHandling : MonoBehaviour
      * Field Initializations
      */
 
-    // Buttons declared in inspector
+    // Actions, buttons declared in inspector
     [SerializeField] private InputAction press;
     [SerializeField] private InputAction pointer;
+    [SerializeField] private InputAction rightHold;
 
+    // Other variables
     private Camera mainCam;
-
     private Rigidbody2D selectedRb;
-    private TargetJoint2D selectedJoint;
 
-    private Vector2 grabOffset;
+    [SerializeField] private float rotationSpeed = 45f;
     private bool isDragging = false;
-
-
+    private Vector2 mouseWorldCoords;
+    private Vector2 mouseOffset;
 
     /*
-     * Awake() is called after a prefab is instantiated.
-     * Desc: This function enables input actions and defines responses to clicking and letting go.
+     * Awake(): This function enables input actions and defines responses to clicking and letting go.
      */
     private void Awake()
     {
@@ -42,87 +46,93 @@ public class InteractObjHandling : MonoBehaviour
 
         press.Enable();
         pointer.Enable();
+        rightHold.Enable();
 
         press.performed += _ => StartDrag();
         press.canceled += _ => StopDrag();
     }
 
-
-
     /*
-     * Update() is called once per frame.
-     * Desc: If nothing is being dragged, do nothing. Else, redefine the joint target every frame to match mouse coords.
+     * Update(): If nothing is being dragged, do nothing. Else, redefine the world coordinates of the mouse and continue to drag.
      */
     private void Update()
     {
-        if (selectedJoint == null) return;
+        if (isDragging == false) return;
 
-        Vector2 mouseWorld = mainCam.ScreenToWorldPoint(pointer.ReadValue<Vector2>());
-        selectedJoint.target = mouseWorld;
+        mouseWorldCoords = mainCam.ScreenToWorldPoint(pointer.ReadValue<Vector2>());
+        ContinueDrag();
     }
 
-
-
     /*
-     * StartDrag() is called when a left-click has been performed.
-     * Desc: Finds the 2D collider that intersects with the current mouse position on a pressed left-click.
-     *       It appropriately checks if a collider at this point exists or if it has a BuildItem script attached.
-     *       If so, it extracts the Rigidbody2D component from the grabbed object and creates a TargetJoint2D component for it.
-     *       It will then set the anchor and target point equal to the mouse position and joint attributes are defined.
+     * StartDrag(): Find the object that the mouse is clicking on and associated components, change necessary parameters, and call ContinueDrag().
+     *              StartDrag() and ContinueDrag() are separated to prevent contrived reassignments every frame.
      */
-    private void StartDrag()
+    public void StartDrag()
     {
         // Convert from screen mouse position, to mouse position within the world
-        Vector2 mouseWorld = mainCam.ScreenToWorldPoint(pointer.ReadValue<Vector2>());
-        Collider2D hit = Physics2D.OverlapPoint(mouseWorld);
+        mouseWorldCoords = mainCam.ScreenToWorldPoint(pointer.ReadValue<Vector2>());
+        Collider2D hit = Physics2D.OverlapPoint(mouseWorldCoords);
 
+        // If no object exists here
         if (hit == null) return;
 
         BuildItem item = hit.GetComponent<BuildItem>();
         if (item == null) return;
 
+        isDragging = true;
         selectedRb = item.RB;
 
-        // Since the joints are added and destroyed during left-clicks, this won't usually do anything, but I'll keep it for safety to avoid multiple joints
-        selectedJoint = selectedRb.GetComponent<TargetJoint2D>();
-        if (selectedJoint == null)
-        {
-            selectedJoint = selectedRb.gameObject.AddComponent<TargetJoint2D>();
-        }
+        // This helps prevent unwanted movement when dragging
+        selectedRb.angularVelocity = 0;
+        selectedRb.linearVelocity = Vector2.zero;
 
-        // Make it so the joint is customizable
-        selectedJoint.autoConfigureTarget = false;
-        selectedJoint.target = mouseWorld; // in world coords
+        Vector2 itemPos2D = new Vector2(item.RB.transform.position.x, item.RB.transform.position.y);
+        mouseOffset = itemPos2D - mouseWorldCoords;
 
-        Vector2 grabPoint = selectedRb.transform.InverseTransformPoint(mouseWorld);
-        selectedJoint.anchor = grabPoint; // in screen coords
-
-        // Basically, these determine how stiff or loose the "spring" will be
-        selectedJoint.maxForce = 1000f;
-        selectedJoint.dampingRatio = 1.0f;
-        selectedJoint.frequency = 5f;
+        ContinueDrag();
     }
 
+    /*
+     * ContinueDrag(): During the drag, make the object kinematic if it isn't already, and appropriately change its position.
+     *                 Also, if the player holds right-click or R during this, rotate the object.
+     */
+    private void ContinueDrag()
+    {
+        if (selectedRb == null)
+        {
+            return;
+        }
 
+        // Make the object kinematic if it isn't already
+        if (selectedRb.bodyType != RigidbodyType2D.Kinematic)
+        {
+            selectedRb.bodyType = RigidbodyType2D.Kinematic;
+        }
+
+        selectedRb.transform.position = mouseWorldCoords + mouseOffset;
+
+        // Right-click or R is pressed
+        if (rightHold.inProgress)
+        {
+            selectedRb.rotation += rotationSpeed * Time.deltaTime;
+        }
+    }
 
     /*
-     * StopDrag() is called when the left-click has been released.
-     * Desc: When the left-click is lifted, destroy the created joint if applicable. Get rid of that object's info.
+     * StopDrag(): When the left-click is lifted, if it is not already dynamic and is within the building range, change the body type to dynamic and empty selectedRb.
      */
     private void StopDrag()
     {
-        if (selectedJoint != null)
+        // I realize that checking if not dynamic may be redundant... but I like to be safe. Might change this later though.
+        if (selectedRb != null && selectedRb.bodyType != RigidbodyType2D.Dynamic && selectedRb.transform.position.y > ConveyorHandling.boundFloor)
         {
-            Destroy(selectedJoint);
-            selectedJoint = null;
+            selectedRb.bodyType = RigidbodyType2D.Dynamic;
+            selectedRb = null;
         }
 
-        selectedRb = null;
+        isDragging = false;
     }
 
-    /*
-     * OnDestroy() is called after an object is destroyed.
-     */
     private void OnDestroy()
     {
         press.Dispose();

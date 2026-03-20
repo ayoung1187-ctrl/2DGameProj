@@ -1,4 +1,10 @@
-// This script helps prevent reduntandly calling GetComponent<RigidBody2D> after the object is found in InteractObjHandling
+/* 
+ * Purpose: This class exists mostly as a helper so that the rigidbodies of the interactable objects can be easily accessed
+ * 
+ * Attached To: All buildable objects (rectangle, circle, square, triangle)
+ * 
+ * Last Edited: 3/19/26
+ */
 
 using UnityEngine;
 

@@ -59,6 +59,17 @@
                 },
                 {
                     "name": "",
+                    "id": "f0f7659f-5846-41ed-9092-db33052f581b",
+                    "path": "<Keyboard>/r",
+                    "interactions": "Hold",
+                    "processors": "",
+                    "groups": "",
+                    "action": "Rotate",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
                     "id": "620ad703-f146-4a20-ac84-fb80717be571",
                     "path": "<Mouse>/position",
                     "interactions": "",
