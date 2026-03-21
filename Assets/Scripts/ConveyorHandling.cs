@@ -11,8 +11,8 @@
  * Last Edited: 3/19/26
  */
 
-using UnityEngine;
 using System.Collections.Generic;
+using UnityEngine;
 
 public class ConveyorHandling : MonoBehaviour
 {
@@ -36,11 +36,13 @@ public class ConveyorHandling : MonoBehaviour
     private List<GameObject> spawnedItems = new List<GameObject>();
     private GameObject itemInstance;
 
+    public TimerS timer;
+
     void Start()
     {
         itemSpawnPoint = circle.transform.position; // This is true for all objects
         Invoke("SpawnItems", 1f);
-        Invoke("StartTimer", 0.75f);
+        Invoke("StartTimer", 1f);
     }
 
     /*
@@ -65,10 +67,9 @@ public class ConveyorHandling : MonoBehaviour
 
             BuildItem item = spawnedItems[i].GetComponent<BuildItem>();
 
-            if (spawnedItems[i].transform.position.y > boundFloor)
+            if (item.GetIsBought())
             {
                 SpentBudget.spentMoney += item.cost;
-                item.SetIsBought(true);
                 spawnedItems.RemoveAt(i);
             }
             else if (spawnedItems[i].transform.position.x < boundLeft)
@@ -118,6 +119,6 @@ public class ConveyorHandling : MonoBehaviour
 
     void StartTimer()
     {
-
+        timer.enabled = true;
     }
 }

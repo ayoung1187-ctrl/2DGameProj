@@ -14,6 +14,7 @@
  *               The plan is to make the objects kinematic whilst on the conveyor belt and during drag, and dynamic otherwise
  */
 
+using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.InputSystem;
 
@@ -30,15 +31,19 @@ public class InteractObjHandling : MonoBehaviour
 
     // Other variables
     private Camera mainCam;
-    private Rigidbody2D selectedRb;
+    private Rigidbody2D ghostdRb;
     private Collider2D selectedCollider;
     private BuildItem item;
+
+    private Collider2D ghostCollider;
 
     [SerializeField] private float rotationSpeed = 45f;
     private bool isDragging = false;
     private Vector2 mouseWorldCoords;
     private Vector2 mouseOffset;
     private Vector2 trackItem;
+
+    private GameObject itemInstance;
 
     /*
      * Awake(): This function enables input actions and defines responses to clicking and letting go.
@@ -84,16 +89,24 @@ public class InteractObjHandling : MonoBehaviour
         if (item.RB == null) return;
 
         isDragging = true;
-        selectedRb = item.RB;
+
+        itemInstance = Instantiate<GameObject>(item.gameObject);
+        SpriteRenderer sr = itemInstance.GetComponent<SpriteRenderer>();
+        sr.color = new Color(1f, 1f, 1f, 0.5f);
+
+        BuildItem ghostBI = itemInstance.GetComponent<BuildItem>();
+        ghostCollider = ghostBI.GetComponent<Collider2D>();
+
+        ghostdRb = ghostBI.RB;
 
         // This helps prevent unwanted movement when dragging
-        selectedRb.angularVelocity = 0;
-        selectedRb.linearVelocity = Vector2.zero;
+        ghostdRb.angularVelocity = 0;
+        ghostdRb.linearVelocity = Vector2.zero;
 
-        Vector2 itemPos2D = new Vector2(item.RB.transform.position.x, item.RB.transform.position.y);
-        mouseOffset = itemPos2D - mouseWorldCoords;
+        Vector2 ghostItemPos2D = new Vector2(ghostBI.RB.transform.position.x, ghostBI.RB.transform.position.y);
+        mouseOffset = ghostItemPos2D - mouseWorldCoords;
 
-        trackItem = item.GetCurPosition();
+        trackItem = ghostBI.GetCurPosition();
 
         ContinueDrag();
     }
@@ -104,25 +117,31 @@ public class InteractObjHandling : MonoBehaviour
      */
     private void ContinueDrag()
     {
-        if (selectedRb == null || selectedCollider == null)
+        if (item.RB == null || ghostdRb == null || selectedCollider == null)
         {
             return;
         }
 
-        // Make the object kinematic if it isn't already
-        if (selectedRb.bodyType != RigidbodyType2D.Kinematic)
+        // Make the original item kinematic so that it "freezes"
+        if (item.RB.bodyType != RigidbodyType2D.Static)
         {
-            selectedRb.bodyType = RigidbodyType2D.Kinematic;
+            item.RB.bodyType = RigidbodyType2D.Static;
         }
 
-        selectedCollider.enabled = false;
+        // Make the ghost kinematic if it isn't already
+        if (ghostdRb.bodyType != RigidbodyType2D.Kinematic)
+        {
+            ghostdRb.bodyType = RigidbodyType2D.Kinematic;
+        }
 
-        selectedRb.transform.position = mouseWorldCoords + mouseOffset;
+        ghostCollider.enabled = false;
+
+        ghostdRb.transform.position = mouseWorldCoords + mouseOffset;
 
         // Right-click or R is pressed
         if (rightHold.inProgress)
         {
-            selectedRb.rotation += rotationSpeed * Time.deltaTime;
+            ghostdRb.rotation += rotationSpeed * Time.deltaTime;
         }
     }
 
@@ -131,25 +150,33 @@ public class InteractObjHandling : MonoBehaviour
      */
     private void StopDrag()
     {
-        if (selectedRb != null)
+        if (ghostdRb != null && item != null)
         {
-            if (/*selectedRb.transform.position.y*/ mouseWorldCoords.y > ConveyorHandling.boundFloor)
+            if (mouseWorldCoords.y > ConveyorHandling.boundFloor) // If you moved ghost to an area within the building range
             {
-                selectedRb.bodyType = RigidbodyType2D.Dynamic;
+                if (!item.GetIsBought()) item.SetIsBought(true); // If item is not already bought, make it so
+
+                item.RB.transform.position = ghostdRb.transform.position; // Move real object to ghost object position
+                item.RB.transform.rotation = ghostdRb.transform.rotation;
+                item.RB.bodyType = RigidbodyType2D.Dynamic; // Make real object dynamic
             }
-            else if (item != null && item.GetIsBought())
-            {
-                selectedRb.transform.position = trackItem;
+            else if (item.GetIsBought()) // If you moved ghost to conveyor belt
+            { 
+                item.RB.transform.position = trackItem; // If it is bought and you drag it back, force it back to build range (you cannot replace items on conveyor)
+                item.RB.bodyType = RigidbodyType2D.Dynamic; // Make real object dynamic
+
             }
+
+            Destroy(itemInstance);
         }
 
-        if (selectedCollider != null && !selectedCollider.enabled)
+        /*if (selectedCollider != null && !selectedCollider.enabled)
         {
             selectedCollider.enabled = true;
-        }
+        }*/
 
         isDragging = false;
-        selectedRb = null;
+        ghostdRb = null;
         selectedCollider = null;
         item = null;
     }
