@@ -31,11 +31,14 @@ public class InteractObjHandling : MonoBehaviour
     // Other variables
     private Camera mainCam;
     private Rigidbody2D selectedRb;
+    private Collider2D selectedCollider;
+    private BuildItem item;
 
     [SerializeField] private float rotationSpeed = 45f;
     private bool isDragging = false;
     private Vector2 mouseWorldCoords;
     private Vector2 mouseOffset;
+    private Vector2 trackItem;
 
     /*
      * Awake(): This function enables input actions and defines responses to clicking and letting go.
@@ -71,13 +74,14 @@ public class InteractObjHandling : MonoBehaviour
     {
         // Convert from screen mouse position, to mouse position within the world
         mouseWorldCoords = mainCam.ScreenToWorldPoint(pointer.ReadValue<Vector2>());
-        Collider2D hit = Physics2D.OverlapPoint(mouseWorldCoords);
+        selectedCollider = Physics2D.OverlapPoint(mouseWorldCoords);
 
         // If no object exists here
-        if (hit == null) return;
+        if (selectedCollider == null) return;
 
-        BuildItem item = hit.GetComponent<BuildItem>();
+        item = selectedCollider.GetComponent<BuildItem>();
         if (item == null) return;
+        if (item.RB == null) return;
 
         isDragging = true;
         selectedRb = item.RB;
@@ -89,6 +93,8 @@ public class InteractObjHandling : MonoBehaviour
         Vector2 itemPos2D = new Vector2(item.RB.transform.position.x, item.RB.transform.position.y);
         mouseOffset = itemPos2D - mouseWorldCoords;
 
+        trackItem = item.GetCurPosition();
+
         ContinueDrag();
     }
 
@@ -98,7 +104,7 @@ public class InteractObjHandling : MonoBehaviour
      */
     private void ContinueDrag()
     {
-        if (selectedRb == null)
+        if (selectedRb == null || selectedCollider == null)
         {
             return;
         }
@@ -108,6 +114,8 @@ public class InteractObjHandling : MonoBehaviour
         {
             selectedRb.bodyType = RigidbodyType2D.Kinematic;
         }
+
+        selectedCollider.enabled = false;
 
         selectedRb.transform.position = mouseWorldCoords + mouseOffset;
 
@@ -123,19 +131,33 @@ public class InteractObjHandling : MonoBehaviour
      */
     private void StopDrag()
     {
-        // I realize that checking if not dynamic may be redundant... but I like to be safe. Might change this later though.
-        if (selectedRb != null && selectedRb.bodyType != RigidbodyType2D.Dynamic && selectedRb.transform.position.y > ConveyorHandling.boundFloor)
+        if (selectedRb != null)
         {
-            selectedRb.bodyType = RigidbodyType2D.Dynamic;
-            selectedRb = null;
+            if (/*selectedRb.transform.position.y*/ mouseWorldCoords.y > ConveyorHandling.boundFloor)
+            {
+                selectedRb.bodyType = RigidbodyType2D.Dynamic;
+            }
+            else if (item != null && item.GetIsBought())
+            {
+                selectedRb.transform.position = trackItem;
+            }
+        }
+
+        if (selectedCollider != null && !selectedCollider.enabled)
+        {
+            selectedCollider.enabled = true;
         }
 
         isDragging = false;
+        selectedRb = null;
+        selectedCollider = null;
+        item = null;
     }
 
     private void OnDestroy()
     {
         press.Dispose();
         pointer.Dispose();
+        rightHold.Dispose();
     }
 }

@@ -22,7 +22,7 @@ public class ConveyorHandling : MonoBehaviour
 
     // Bounds of buidable floor and left side of the screen
     static public float boundLeft = -10f;
-    static public float boundFloor = -3.5f;
+    static public float boundFloor = -2.5f;
 
     // GameObjects to be spawned
     [SerializeField] private GameObject circle;
@@ -39,11 +39,13 @@ public class ConveyorHandling : MonoBehaviour
     void Start()
     {
         itemSpawnPoint = circle.transform.position; // This is true for all objects
-        Invoke("SpawnItems", 2f);
+        Invoke("SpawnItems", 1f);
+        Invoke("StartTimer", 0.75f);
     }
 
     /*
-     * Update(): Makes all spawned items in list move right to left, continuously checking if any are out of bounds or in building area
+     * Update(): Makes all spawned items in list move right to left, continuously checking if any are out of bounds or in building area.
+     *           If the item enters the building area, check which item and add its price to the amount spent.
      */
     void Update()
     {
@@ -61,8 +63,12 @@ public class ConveyorHandling : MonoBehaviour
         {
             if (spawnedItems[i] == null) continue; 
 
+            BuildItem item = spawnedItems[i].GetComponent<BuildItem>();
+
             if (spawnedItems[i].transform.position.y > boundFloor)
             {
+                SpentBudget.spentMoney += item.cost;
+                item.SetIsBought(true);
                 spawnedItems.RemoveAt(i);
             }
             else if (spawnedItems[i].transform.position.x < boundLeft)
@@ -108,5 +114,10 @@ public class ConveyorHandling : MonoBehaviour
         }
 
         Invoke("SpawnItems", 5f);
+    }
+
+    void StartTimer()
+    {
+
     }
 }
