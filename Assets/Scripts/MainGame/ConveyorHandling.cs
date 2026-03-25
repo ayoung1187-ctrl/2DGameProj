@@ -21,14 +21,15 @@ public class ConveyorHandling : MonoBehaviour
      */
 
     // Bounds of buidable floor and left side of the screen
-    static public float boundLeft = -10f;
+    static public float boundLeft = -15f;
     static public float boundFloor = -2.5f;
 
     // GameObjects to be spawned
-    [SerializeField] private GameObject circle;
-    [SerializeField] private GameObject rectangle;
-    [SerializeField] private GameObject square;
-    [SerializeField] private GameObject triangle;
+    [SerializeField] private GameObject cosmicCircle;
+    [SerializeField] private GameObject steelBeam;
+    [SerializeField] private GameObject woodenCrate;
+    [SerializeField] private GameObject decorativeTriangle;
+    [SerializeField] private GameObject sheep;
 
     // Other variables
     [SerializeField] private float conveyorSpeed = 1f;
@@ -40,7 +41,7 @@ public class ConveyorHandling : MonoBehaviour
 
     void Start()
     {
-        itemSpawnPoint = circle.transform.position; // This is true for all objects
+        itemSpawnPoint = new Vector3(11, -4.2f, 0);
         Invoke("SpawnItems", 1f);
         Invoke("StartTimer", 1f);
     }
@@ -74,7 +75,7 @@ public class ConveyorHandling : MonoBehaviour
             }
             else if (spawnedItems[i].transform.position.x < boundLeft)
             {
-                Destroy(spawnedItems[i]);
+               Destroy(spawnedItems[i]);
                 spawnedItems.RemoveAt(i);
             }
         }
@@ -86,27 +87,32 @@ public class ConveyorHandling : MonoBehaviour
      */
     void SpawnItems()
     {
-        int randNum = Random.Range(0, 4);
+        int randNum = Random.Range(0, 5);
         
         switch (randNum)
         {
             case 0:
-                itemInstance = Instantiate<GameObject>(triangle);
+                itemInstance = Instantiate<GameObject>(decorativeTriangle);
                 itemInstance.transform.position = itemSpawnPoint;
                 spawnedItems.Add(itemInstance);
                 break;
             case 1:
-                itemInstance = Instantiate<GameObject>(square);
+                itemInstance = Instantiate<GameObject>(woodenCrate);
                 itemInstance.transform.position = itemSpawnPoint;
                 spawnedItems.Add(itemInstance);
                 break;
             case 2:
-                itemInstance = Instantiate<GameObject>(rectangle);
+                itemInstance = Instantiate<GameObject>(steelBeam);
                 itemInstance.transform.position = itemSpawnPoint;
                 spawnedItems.Add(itemInstance);
                 break;
             case 3:
-                itemInstance = Instantiate<GameObject>(circle);
+                itemInstance = Instantiate<GameObject>(cosmicCircle);
+                itemInstance.transform.position = itemSpawnPoint;
+                spawnedItems.Add(itemInstance);
+                break;
+            case 4:
+                itemInstance = Instantiate<GameObject>(sheep);
                 itemInstance.transform.position = itemSpawnPoint;
                 spawnedItems.Add(itemInstance);
                 break;

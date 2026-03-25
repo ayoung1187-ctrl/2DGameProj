@@ -28,10 +28,11 @@ public class InteractObjHandling : MonoBehaviour
     [SerializeField] private InputAction press;
     [SerializeField] private InputAction pointer;
     [SerializeField] private InputAction rightHold;
+    [SerializeField] private InputAction fKey;
 
     // Other variables
     private Camera mainCam;
-    private Rigidbody2D ghostdRb;
+    private Rigidbody2D ghostRb;
     private Collider2D selectedCollider;
     private BuildItem item;
 
@@ -55,6 +56,7 @@ public class InteractObjHandling : MonoBehaviour
         press.Enable();
         pointer.Enable();
         rightHold.Enable();
+        fKey.Enable();
 
         press.performed += _ => StartDrag();
         press.canceled += _ => StopDrag();
@@ -79,14 +81,24 @@ public class InteractObjHandling : MonoBehaviour
     {
         // Convert from screen mouse position, to mouse position within the world
         mouseWorldCoords = mainCam.ScreenToWorldPoint(pointer.ReadValue<Vector2>());
-        selectedCollider = Physics2D.OverlapPoint(mouseWorldCoords);
+        LayerMask objectLayer = LayerMask.GetMask("Objects"); // Make it so that this script will only detect objects
+        selectedCollider = Physics2D.OverlapPoint(mouseWorldCoords, objectLayer);
+
+        //Debug.Log("Entered StartDrag()");
 
         // If no object exists here
         if (selectedCollider == null) return;
 
+        //Debug.Log("selectedCollider != null");
+
         item = selectedCollider.GetComponent<BuildItem>();
         if (item == null) return;
+
+        //Debug.Log("item != null");
+
         if (item.RB == null) return;
+
+        //Debug.Log("item.RB != null");
 
         isDragging = true;
 
@@ -97,11 +109,11 @@ public class InteractObjHandling : MonoBehaviour
         BuildItem ghostBI = itemInstance.GetComponent<BuildItem>();
         ghostCollider = ghostBI.GetComponent<Collider2D>();
 
-        ghostdRb = ghostBI.RB;
+        ghostRb = ghostBI.RB;
 
         // This helps prevent unwanted movement when dragging
-        ghostdRb.angularVelocity = 0;
-        ghostdRb.linearVelocity = Vector2.zero;
+        ghostRb.angularVelocity = 0;
+        ghostRb.linearVelocity = Vector2.zero;
 
         Vector2 ghostItemPos2D = new Vector2(ghostBI.RB.transform.position.x, ghostBI.RB.transform.position.y);
         mouseOffset = ghostItemPos2D - mouseWorldCoords;
@@ -117,10 +129,12 @@ public class InteractObjHandling : MonoBehaviour
      */
     private void ContinueDrag()
     {
-        if (item.RB == null || ghostdRb == null || selectedCollider == null)
+        if (item.RB == null || ghostRb == null || selectedCollider == null)
         {
             return;
         }
+
+        //Debug.Log("item.RB != null, ghostRb != null, selectedCollider != null");
 
         // Make the original item kinematic so that it "freezes"
         if (item.RB.bodyType != RigidbodyType2D.Static)
@@ -129,19 +143,26 @@ public class InteractObjHandling : MonoBehaviour
         }
 
         // Make the ghost kinematic if it isn't already
-        if (ghostdRb.bodyType != RigidbodyType2D.Kinematic)
+        if (ghostRb.bodyType != RigidbodyType2D.Kinematic)
         {
-            ghostdRb.bodyType = RigidbodyType2D.Kinematic;
+            ghostRb.bodyType = RigidbodyType2D.Kinematic;
         }
 
         ghostCollider.enabled = false;
 
-        ghostdRb.transform.position = mouseWorldCoords + mouseOffset;
+        ghostRb.transform.position = mouseWorldCoords + mouseOffset;
 
         // Right-click or R is pressed
         if (rightHold.inProgress)
         {
-            ghostdRb.rotation += rotationSpeed * Time.deltaTime;
+            ghostRb.rotation += rotationSpeed * Time.deltaTime;
+        }
+
+        if (fKey.triggered)
+        {
+            Vector2 ghostInvertScale = ghostRb.transform.localScale;
+            ghostInvertScale.x = -ghostRb.transform.localScale.x;
+            ghostRb.transform.localScale = ghostInvertScale;
         }
     }
 
@@ -150,14 +171,15 @@ public class InteractObjHandling : MonoBehaviour
      */
     private void StopDrag()
     {
-        if (ghostdRb != null && item != null)
+        if (ghostRb != null && item != null)
         {
             if (mouseWorldCoords.y > ConveyorHandling.boundFloor) // If you moved ghost to an area within the building range
             {
                 if (!item.GetIsBought()) item.SetIsBought(true); // If item is not already bought, make it so
 
-                item.RB.transform.position = ghostdRb.transform.position; // Move real object to ghost object position
-                item.RB.transform.rotation = ghostdRb.transform.rotation;
+                item.RB.transform.position = ghostRb.transform.position; // Move real object to ghost object position
+                item.RB.transform.rotation = ghostRb.transform.rotation;
+                item.RB.transform.localScale = ghostRb.transform.localScale;
                 item.RB.bodyType = RigidbodyType2D.Dynamic; // Make real object dynamic
             }
             else if (item.GetIsBought()) // If you moved ghost to conveyor belt
@@ -176,7 +198,7 @@ public class InteractObjHandling : MonoBehaviour
         }*/
 
         isDragging = false;
-        ghostdRb = null;
+        ghostRb = null;
         selectedCollider = null;
         item = null;
     }

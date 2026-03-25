@@ -1,0 +1,659 @@
+fileFormatVersion: 2
+guid: 58abd50212ce20546b6bbca946fb1365
+TextureImporter:
+  internalIDToNameTable:
+  - first:
+      213: 3140557540837843336
+    second: Untitled_Artwork-2-trim_0
+  - first:
+      213: 2076137677333738654
+    second: Untitled_Artwork-2-trim_1
+  - first:
+      213: 7775701359196856796
+    second: Untitled_Artwork-2-trim_2
+  - first:
+      213: 8546495329457135857
+    second: Untitled_Artwork-2-trim_3
+  - first:
+      213: -7966139363444753908
+    second: Untitled_Artwork-2-trim_4
+  - first:
+      213: 275242297390836224
+    second: Untitled_Artwork-2-trim_5
+  - first:
+      213: -1036364780853596908
+    second: Untitled_Artwork-2-trim_6
+  - first:
+      213: 6436437092436625213
+    second: Untitled_Artwork-2-trim_7
+  - first:
+      213: -1273448795518970430
+    second: Untitled_Artwork-2-trim_8
+  - first:
+      213: -1331621296478868705
+    second: Untitled_Artwork-2-trim_9
+  - first:
+      213: 4227472817695849142
+    second: Untitled_Artwork-2-trim_10
+  - first:
+      213: 6974745617889006287
+    second: Untitled_Artwork-2-trim_11
+  - first:
+      213: -3994712411212278643
+    second: Untitled_Artwork-2-trim_12
+  externalObjects: {}
+  serializedVersion: 13
+  mipmaps:
+    mipMapMode: 0
+    enableMipMap: 0
+    sRGBTexture: 1
+    linearTexture: 0
+    fadeOut: 0
+    borderMipMap: 0
+    mipMapsPreserveCoverage: 0
+    alphaTestReferenceValue: 0.5
+    mipMapFadeDistanceStart: 1
+    mipMapFadeDistanceEnd: 3
+  bumpmap:
+    convertToNormalMap: 0
+    externalNormalMap: 0
+    heightScale: 0.25
+    normalMapFilter: 0
+    flipGreenChannel: 0
+  isReadable: 0
+  streamingMipmaps: 0
+  streamingMipmapsPriority: 0
+  vTOnly: 0
+  ignoreMipmapLimit: 0
+  grayScaleToAlpha: 0
+  generateCubemap: 6
+  cubemapConvolution: 0
+  seamlessCubemap: 0
+  textureFormat: 1
+  maxTextureSize: 2048
+  textureSettings:
+    serializedVersion: 2
+    filterMode: 1
+    aniso: 1
+    mipBias: 0
+    wrapU: 1
+    wrapV: 1
+    wrapW: 1
+  nPOTScale: 0
+  lightmap: 0
+  compressionQuality: 50
+  spriteMode: 1
+  spriteExtrude: 1
+  spriteMeshType: 1
+  alignment: 0
+  spritePivot: {x: 0.5, y: 0.5}
+  spritePixelsToUnits: 100
+  spriteBorder: {x: 0, y: 0, z: 0, w: 0}
+  spriteGenerateFallbackPhysicsShape: 1
+  alphaUsage: 1
+  alphaIsTransparency: 1
+  spriteTessellationDetail: -1
+  textureType: 8
+  textureShape: 1
+  singleChannelComponent: 0
+  flipbookRows: 1
+  flipbookColumns: 1
+  maxTextureSizeSet: 0
+  compressionQualitySet: 0
+  textureFormatSet: 0
+  ignorePngGamma: 0
+  applyGammaDecoding: 0
+  swizzle: 50462976
+  cookieLightType: 0
+  platformSettings:
+  - serializedVersion: 4
+    buildTarget: DefaultTexturePlatform
+    maxTextureSize: 2048
+    resizeAlgorithm: 0
+    textureFormat: -1
+    textureCompression: 1
+    compressionQuality: 50
+    crunchedCompression: 0
+    allowsAlphaSplitting: 0
+    overridden: 0
+    ignorePlatformSupport: 0
+    androidETC2FallbackOverride: 0
+    forceMaximumCompressionQuality_BC6H_BC7: 0
+  - serializedVersion: 4
+    buildTarget: Standalone
+    maxTextureSize: 2048
+    resizeAlgorithm: 0
+    textureFormat: -1
+    textureCompression: 1
+    compressionQuality: 50
+    crunchedCompression: 0
+    allowsAlphaSplitting: 0
+    overridden: 0
+    ignorePlatformSupport: 0
+    androidETC2FallbackOverride: 0
+    forceMaximumCompressionQuality_BC6H_BC7: 0
+  - serializedVersion: 4
+    buildTarget: WebGL
+    maxTextureSize: 2048
+    resizeAlgorithm: 0
+    textureFormat: -1
+    textureCompression: 1
+    compressionQuality: 50
+    crunchedCompression: 0
+    allowsAlphaSplitting: 0
+    overridden: 0
+    ignorePlatformSupport: 0
+    androidETC2FallbackOverride: 0
+    forceMaximumCompressionQuality_BC6H_BC7: 0
+  spriteSheet:
+    serializedVersion: 2
+    sprites:
+    - serializedVersion: 2
+      name: Untitled_Artwork-2-trim_0
+      rect:
+        serializedVersion: 2
+        x: 8
+        y: 208
+        width: 32
+        height: 40
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 881605aa170859b20800000000000000
+      internalID: 3140557540837843336
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Untitled_Artwork-2-trim_1
+      rect:
+        serializedVersion: 2
+        x: 52
+        y: 220
+        width: 12
+        height: 28
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: e94384ab73cefcc10800000000000000
+      internalID: 2076137677333738654
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Untitled_Artwork-2-trim_2
+      rect:
+        serializedVersion: 2
+        x: 180
+        y: 220
+        width: 12
+        height: 28
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: cd163725037d8eb60800000000000000
+      internalID: 7775701359196856796
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Untitled_Artwork-2-trim_3
+      rect:
+        serializedVersion: 2
+        x: 204
+        y: 208
+        width: 32
+        height: 40
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 1f0e3da88304b9670800000000000000
+      internalID: 8546495329457135857
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Untitled_Artwork-2-trim_4
+      rect:
+        serializedVersion: 2
+        x: 0
+        y: 192
+        width: 20
+        height: 16
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: c0a7e929476927190800000000000000
+      internalID: -7966139363444753908
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Untitled_Artwork-2-trim_5
+      rect:
+        serializedVersion: 2
+        x: 36
+        y: 40
+        width: 168
+        height: 168
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 5}
+      customData: 
+      outline:
+      - - {x: 14, y: -86}
+        - {x: 14, y: -84}
+        - {x: 28, y: -84}
+        - {x: 30, y: -82}
+        - {x: 30, y: -80}
+        - {x: 36, y: -80}
+        - {x: 38, y: -78}
+        - {x: 38, y: -76}
+        - {x: 44, y: -76}
+        - {x: 46, y: -74}
+        - {x: 46, y: -72}
+        - {x: 48, y: -72}
+        - {x: 50, y: -70}
+        - {x: 50, y: -68}
+        - {x: 52, y: -68}
+        - {x: 54, y: -66}
+        - {x: 54, y: -64}
+        - {x: 60, y: -64}
+        - {x: 62, y: -62}
+        - {x: 62, y: -56}
+        - {x: 64, y: -56}
+        - {x: 66, y: -54}
+        - {x: 66, y: -52}
+        - {x: 68, y: -52}
+        - {x: 70, y: -50}
+        - {x: 70, y: -48}
+        - {x: 72, y: -48}
+        - {x: 74, y: -46}
+        - {x: 74, y: -40}
+        - {x: 76, y: -40}
+        - {x: 78, y: -38}
+        - {x: 78, y: -28}
+        - {x: 80, y: -28}
+        - {x: 82, y: -26}
+        - {x: 82, y: -12}
+        - {x: 84, y: -12}
+        - {x: 85, y: -11}
+        - {x: 85, y: 15}
+        - {x: 84, y: 16}
+        - {x: 82, y: 16}
+        - {x: 82, y: 30}
+        - {x: 80, y: 32}
+        - {x: 78, y: 32}
+        - {x: 78, y: 38}
+        - {x: 76, y: 40}
+        - {x: 74, y: 40}
+        - {x: 74, y: 46}
+        - {x: 72, y: 48}
+        - {x: 70, y: 48}
+        - {x: 70, y: 54}
+        - {x: 68, y: 56}
+        - {x: 66, y: 56}
+        - {x: 66, y: 58}
+        - {x: 64, y: 60}
+        - {x: 62, y: 60}
+        - {x: 62, y: 62}
+        - {x: 60, y: 64}
+        - {x: 58, y: 64}
+        - {x: 58, y: 66}
+        - {x: 56, y: 68}
+        - {x: 54, y: 68}
+        - {x: 54, y: 70}
+        - {x: 52, y: 72}
+        - {x: 46, y: 72}
+        - {x: 46, y: 74}
+        - {x: 44, y: 76}
+        - {x: 42, y: 76}
+        - {x: 42, y: 78}
+        - {x: 40, y: 80}
+        - {x: 34, y: 80}
+        - {x: 34, y: 82}
+        - {x: 32, y: 84}
+        - {x: 22, y: 84}
+        - {x: 22, y: 86}
+        - {x: 21, y: 87}
+        - {x: -21, y: 87}
+        - {x: -22, y: 86}
+        - {x: -22, y: 84}
+        - {x: -32, y: 84}
+        - {x: -34, y: 82}
+        - {x: -34, y: 80}
+        - {x: -40, y: 80}
+        - {x: -42, y: 78}
+        - {x: -42, y: 76}
+        - {x: -48, y: 76}
+        - {x: -50, y: 74}
+        - {x: -50, y: 72}
+        - {x: -52, y: 72}
+        - {x: -54, y: 70}
+        - {x: -54, y: 68}
+        - {x: -56, y: 68}
+        - {x: -58, y: 66}
+        - {x: -58, y: 64}
+        - {x: -60, y: 64}
+        - {x: -62, y: 62}
+        - {x: -62, y: 60}
+        - {x: -64, y: 60}
+        - {x: -66, y: 58}
+        - {x: -66, y: 56}
+        - {x: -68, y: 56}
+        - {x: -70, y: 54}
+        - {x: -70, y: 48}
+        - {x: -72, y: 48}
+        - {x: -74, y: 46}
+        - {x: -74, y: 44}
+        - {x: -76, y: 44}
+        - {x: -78, y: 42}
+        - {x: -78, y: 32}
+        - {x: -80, y: 32}
+        - {x: -82, y: 30}
+        - {x: -82, y: 20}
+        - {x: -84, y: 20}
+        - {x: -85, y: 19}
+        - {x: -85, y: -19}
+        - {x: -84, y: -20}
+        - {x: -82, y: -20}
+        - {x: -82, y: -30}
+        - {x: -80, y: -32}
+        - {x: -78, y: -32}
+        - {x: -78, y: -38}
+        - {x: -76, y: -40}
+        - {x: -74, y: -40}
+        - {x: -74, y: -46}
+        - {x: -72, y: -48}
+        - {x: -70, y: -48}
+        - {x: -70, y: -54}
+        - {x: -68, y: -56}
+        - {x: -66, y: -56}
+        - {x: -66, y: -58}
+        - {x: -64, y: -60}
+        - {x: -62, y: -60}
+        - {x: -62, y: -62}
+        - {x: -60, y: -64}
+        - {x: -58, y: -64}
+        - {x: -58, y: -66}
+        - {x: -56, y: -68}
+        - {x: -50, y: -68}
+        - {x: -50, y: -70}
+        - {x: -48, y: -72}
+        - {x: -46, y: -72}
+        - {x: -46, y: -74}
+        - {x: -44, y: -76}
+        - {x: -38, y: -76}
+        - {x: -38, y: -78}
+        - {x: -36, y: -80}
+        - {x: -30, y: -80}
+        - {x: -30, y: -82}
+        - {x: -28, y: -84}
+        - {x: -14, y: -84}
+        - {x: -14, y: -86}
+        - {x: -13, y: -87}
+        - {x: 13, y: -87}
+      - - {x: -78, y: 82}
+        - {x: -78, y: 87}
+        - {x: -85, y: 87}
+        - {x: -85, y: 80}
+        - {x: -80, y: 80}
+      - - {x: 85, y: 87}
+        - {x: 82, y: 87}
+        - {x: 82, y: 82}
+        - {x: 84, y: 80}
+        - {x: 85, y: 80}
+      - - {x: -79, y: -84}
+        - {x: -85, y: -84}
+        - {x: -85, y: -87}
+        - {x: -78, y: -87}
+      physicsShape: []
+      tessellationDetail: 1
+      bones: []
+      spriteID: 00aa423496bd1d300800000000000000
+      internalID: 275242297390836224
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Untitled_Artwork-2-trim_6
+      rect:
+        serializedVersion: 2
+        x: 224
+        y: 192
+        width: 20
+        height: 16
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 41dee7309b71e91f0800000000000000
+      internalID: -1036364780853596908
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Untitled_Artwork-2-trim_7
+      rect:
+        serializedVersion: 2
+        x: 0
+        y: 40
+        width: 20
+        height: 16
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: d3745d11f61d25950800000000000000
+      internalID: 6436437092436625213
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Untitled_Artwork-2-trim_8
+      rect:
+        serializedVersion: 2
+        x: 8
+        y: 0
+        width: 32
+        height: 40
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 2c55177411dc35ee0800000000000000
+      internalID: -1273448795518970430
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Untitled_Artwork-2-trim_9
+      rect:
+        serializedVersion: 2
+        x: 204
+        y: 0
+        width: 32
+        height: 40
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: f1b28007c71258de0800000000000000
+      internalID: -1331621296478868705
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Untitled_Artwork-2-trim_10
+      rect:
+        serializedVersion: 2
+        x: 224
+        y: 40
+        width: 20
+        height: 16
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 6ba716c21200baa30800000000000000
+      internalID: 4227472817695849142
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Untitled_Artwork-2-trim_11
+      rect:
+        serializedVersion: 2
+        x: 52
+        y: 0
+        width: 12
+        height: 28
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: fc29cf88f264bc060800000000000000
+      internalID: 6974745617889006287
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Untitled_Artwork-2-trim_12
+      rect:
+        serializedVersion: 2
+        x: 180
+        y: 0
+        width: 12
+        height: 28
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: d8419d51a3eef88c0800000000000000
+      internalID: -3994712411212278643
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Untitled_Artwork-2-trim_13
+      rect:
+        serializedVersion: 2
+        x: 0
+        y: 0
+        width: 244
+        height: 248
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 97063361bc298d5478703c0efd26c762
+      internalID: 1301590146
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    outline: []
+    customData: 
+    physicsShape: []
+    bones: []
+    spriteID: 3c11a9e5c03574f4087bc3fd7b003d20
+    internalID: 0
+    vertices: []
+    indices: 
+    edges: []
+    weights: []
+    secondaryTextures: []
+    spriteCustomMetadata:
+      entries:
+      - key: SpriteEditor.SliceSettings
+        value: '{"sliceOnImport":false,"gridCellCount":{"x":1.0,"y":1.0},"gridSpriteSize":{"x":64.0,"y":64.0},"gridSpriteOffset":{"x":0.0,"y":0.0},"gridSpritePadding":{"x":0.0,"y":0.0},"pivot":{"x":0.5,"y":0.5},"pivotPixels":{"x":0.0,"y":0.0},"autoSlicingMethod":0,"spriteAlignment":0,"pivotUnitMode":0,"slicingType":0,"keepEmptyRects":false,"isAlternate":false}'
+    nameFileIdTable:
+      Untitled_Artwork-2-trim_0: 3140557540837843336
+      Untitled_Artwork-2-trim_1: 2076137677333738654
+      Untitled_Artwork-2-trim_10: 4227472817695849142
+      Untitled_Artwork-2-trim_11: 6974745617889006287
+      Untitled_Artwork-2-trim_12: -3994712411212278643
+      Untitled_Artwork-2-trim_13: 1301590146
+      Untitled_Artwork-2-trim_2: 7775701359196856796
+      Untitled_Artwork-2-trim_3: 8546495329457135857
+      Untitled_Artwork-2-trim_4: -7966139363444753908
+      Untitled_Artwork-2-trim_5: 275242297390836224
+      Untitled_Artwork-2-trim_6: -1036364780853596908
+      Untitled_Artwork-2-trim_7: 6436437092436625213
+      Untitled_Artwork-2-trim_8: -1273448795518970430
+      Untitled_Artwork-2-trim_9: -1331621296478868705
+  mipmapLimitGroupName: 
+  pSDRemoveMatte: 0
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
