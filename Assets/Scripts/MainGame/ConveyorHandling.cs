@@ -8,7 +8,7 @@
  *                 Then, objects will move right to left until they either exit the boundaries or are dragged onto the building range,
  *                 with which they are no longer considered by this class.
  * 
- * Last Edited: 3/19/26
+ * Last Edited: 3/25/26
  */
 
 using System.Collections.Generic;
@@ -24,20 +24,26 @@ public class ConveyorHandling : MonoBehaviour
     static public float boundLeft = -15f;
     static public float boundFloor = -2.5f;
 
-    // GameObjects to be spawned
+    [Header("GameObjects to be spawned")]
     [SerializeField] private GameObject cosmicCircle;
     [SerializeField] private GameObject steelBeam;
     [SerializeField] private GameObject woodenCrate;
     [SerializeField] private GameObject decorativeTriangle;
     [SerializeField] private GameObject sheep;
 
-    // Other variables
+    [Header("Conveyor Belt Speed")]
     [SerializeField] private float conveyorSpeed = 1f;
+
+    // Other variables
     private Vector3 itemSpawnPoint;
     private List<GameObject> spawnedItems = new List<GameObject>();
     private GameObject itemInstance;
 
     public TimerS timer;
+
+    /*
+     * Start(): Defines object spawn point and starts the game (conveyor belt and timer) after a delay
+     */
 
     void Start()
     {
@@ -47,8 +53,8 @@ public class ConveyorHandling : MonoBehaviour
     }
 
     /*
-     * Update(): Makes all spawned items in list move right to left, continuously checking if any are out of bounds or in building area.
-     *           If the item enters the building area, check which item and add its price to the amount spent.
+     * Update(): Makes all spawned items in list move right to left, continuously checking if any are bought (determined by InteractObjHandling), or if it has exited screen left.
+     *           In both cases, if true, the object is removed from the list.
      */
     void Update()
     {
@@ -66,7 +72,7 @@ public class ConveyorHandling : MonoBehaviour
         {
             if (spawnedItems[i] == null) continue; 
 
-            BuildItem item = spawnedItems[i].GetComponent<BuildItem>();
+            ObjectData item = spawnedItems[i].GetComponent<ObjectData>();
 
             if (item.GetIsBought())
             {
@@ -83,7 +89,9 @@ public class ConveyorHandling : MonoBehaviour
 
     /*
      * SpawnItems(): Randomly decides which item gets instantiated, and then calls itself with a 5 second delay.
-     *               Not smart to use a switch case, cascading if's would be better, but switches make me happy so it's staying for now.
+     *               I had once said that using a switch case is not the best implementation.
+     *               That is possibly still true.
+     *               But it makes me happy so it's staying (switches need a little love).
      */
     void SpawnItems()
     {
@@ -123,6 +131,10 @@ public class ConveyorHandling : MonoBehaviour
         Invoke("SpawnItems", 5f);
     }
 
+    /*
+     * StartTimer(): The variable timer refers to the TimerS script, which is deactivated on start.
+     *               This simply enables the script, starting the timer.
+     */
     void StartTimer()
     {
         timer.enabled = true;
