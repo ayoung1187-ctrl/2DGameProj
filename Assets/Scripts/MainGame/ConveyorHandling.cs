@@ -39,7 +39,7 @@ public class ConveyorHandling : MonoBehaviour
     private List<GameObject> spawnedItems = new List<GameObject>();
     private GameObject itemInstance;
 
-    public TimerS timer;
+    public Timer timer;
 
     /*
      * Start(): Defines object spawn point and starts the game (conveyor belt and timer) after a delay

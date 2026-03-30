@@ -170,7 +170,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 3ef18e432545d0d40a350800460cce49, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::BuildItem
+  objectID: 011
   cost: 100
+  height: 1
+  width: 1
+  occupiedCells:
+  - {x: 0, y: 0}
 --- !u!82 &6003208170418568928
 AudioSource:
   m_ObjectHideFlags: 0

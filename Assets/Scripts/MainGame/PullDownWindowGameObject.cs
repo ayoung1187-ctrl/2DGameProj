@@ -1,26 +1,24 @@
 /* 
- * Purpose: This class handles the pull down windows for crafting and tasks.
+ * Purpose: This class handles the pull down windows for crafting.
  *          It should be a toggle, pull down incrementally, with the pull down triangle inverting after toggle.
  * 
- * Attached To: CraftingTable and TaskList
+ * Attached To: CraftingTable
  * 
- * Class Function: 
+ * Class Function: Unlike with Tasklist, this script deals with the crafting table as a GameObject, since that was the easiest way for other gameobjects to appear over it.
  * 
- * Last Edited: 3/25/26
+ * Last Edited: 3/29/26
  */
-
-//THIS NEEEDS TO GET FIXED
 
 using UnityEngine;
 
-public class PullDownWindow : MonoBehaviour
+public class PullDownWindowGameObject : MonoBehaviour
 {
     /*
      * Field Variables
      */
 
     [Header("Window Parts")]
-    [SerializeField] private RectTransform panel;
+    [SerializeField] private GameObject panel;
     [SerializeField] private RectTransform content;
     [SerializeField] private RectTransform arrow;
 
@@ -45,7 +43,7 @@ public class PullDownWindow : MonoBehaviour
         if (panel != null)
         {
             Vector2 target = isOpen ? panelOpenPosition : panelClosedPosition;
-            panel.anchoredPosition = Vector2.MoveTowards(panel.anchoredPosition, target, speed * Time.deltaTime);
+            panel.transform.localPosition = Vector2.MoveTowards(panel.transform.localPosition, target, speed * Time.deltaTime);
         }
 
         if (content != null)

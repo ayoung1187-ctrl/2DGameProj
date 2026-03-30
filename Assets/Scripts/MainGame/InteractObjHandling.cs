@@ -8,14 +8,17 @@
  *                 Additionally, if right-click or R is held during this, the object will rotate at a constant speed. If F is pressed, the item will invert horizontally.
  *                 When the left-click is released, the object's body type will change back to dynamic, its position, scale and rotation will match the ghost's, and the ghost will be destroyed.
  *             
- * Last Edited: 3/25/26
+ * Last Edited: 3/29/26
  *             
  * Edit 3/19/26: I realized I don't know if I want joint physics for dragging, so I updated this class to have drag be kinematic.
  *               The plan is to make the objects kinematic whilst on the conveyor belt and during drag, and dynamic otherwise.
+ *               
+ *               !!CHANGE START DRAG'S DESC!!, !!Check 2nd note in start drag!!, !!Change stop drag's desc!!
  */
 
 using UnityEngine;
 using UnityEngine.InputSystem;
+using static UnityEditor.Progress;
 
 public class InteractObjHandling : MonoBehaviour
 {
@@ -32,6 +35,7 @@ public class InteractObjHandling : MonoBehaviour
     // Real object variables
     private Collider2D selectedCollider;
     private ObjectData item;
+    private Vector2Int grabbedCell;
 
     // Ghost variables
     private GameObject ghostInstance;
@@ -43,9 +47,11 @@ public class InteractObjHandling : MonoBehaviour
 
     // Other variables
     private Camera mainCam;
+
     private Vector2 mouseWorldCoords;
     private Vector2 mouseOffset;
     private Vector2 trackItem;
+
     private bool isDragging = false;
 
     /*
@@ -76,23 +82,49 @@ public class InteractObjHandling : MonoBehaviour
     }
 
     /*
-     * StartDrag(): Find the object that the mouse is clicking on and create a "ghost" of it.
+     * StartDrag(): Find the object that the mouse is clicking on and create a "ghost" of it. !!!!CHANGE THIS!!!!
      */
     public void StartDrag()
     {
         // Convert from screen mouse position, to mouse position within the world
         mouseWorldCoords = mainCam.ScreenToWorldPoint(pointer.ReadValue<Vector2>());
-        LayerMask objectLayer = LayerMask.GetMask("Objects"); // Make it so that this script will only detect objects
+        LayerMask objectLayer = LayerMask.GetMask("Objects"); // Make it so that this script will only detect building objects
         selectedCollider = Physics2D.OverlapPoint(mouseWorldCoords, objectLayer);
 
-        // If no object exists here
+        // Now find which child collider, if any, the mouse is clicking on and relate that to the object's personal grid
+        LayerMask childLayer = LayerMask.GetMask("ChildColliders");
+        Collider2D childCollider = Physics2D.OverlapPoint(mouseWorldCoords, childLayer);
+
+
+        // If no object exists here, do nothing
         if (selectedCollider == null) return;
 
         item = selectedCollider.GetComponent<ObjectData>();
-        if (item == null || item.RB == null) return;
+        if (item == null || item.RB == null) return; // If collider has no ObjectData script or Rigidbody2D components, do nothing
 
         isDragging = true;
 
+
+        // Find where on this item's grid you are grabbing
+        if (childCollider != null)
+        {
+            ObjectShapeCell clickedCell = childCollider.GetComponent<ObjectShapeCell>(); // Find the point of the object that the player is clicking on. Ex: (1,0) would be the middle portion of the horizontal beam.
+            /*if (clickedCell == null)
+            {
+                Debug.Log("clickedCell not originally found");
+                clickedCell = selectedCollider.GetComponentInParent<ObjectShapeCell>();
+            }*/
+
+            grabbedCell = clickedCell != null ? clickedCell.LocalCell : Vector2Int.zero; // If this object has relative grid data, find it's local cell. Else, it's local cell is (0,0)
+            Debug.Log("Clicked on" + grabbedCell);
+        }
+        else
+        {
+            grabbedCell = Vector2Int.zero; // If this object doesn't even have child colliders, set local cell to (0,0)
+        }
+
+
+        // Create ghost instance and decrease its alpha value
         ghostInstance = Instantiate<GameObject>(item.gameObject);
         SpriteRenderer sr = ghostInstance.GetComponent<SpriteRenderer>();
         sr.color = new Color(1f, 1f, 1f, 0.5f);
@@ -103,6 +135,10 @@ public class InteractObjHandling : MonoBehaviour
         ghostRb = ghostBI.RB;
 
         // This helps prevent unwanted movement when dragging
+
+        //
+        //!!!!Something is breaking here on second pickup!!!!
+        //
         ghostRb.angularVelocity = 0;
         ghostRb.linearVelocity = Vector2.zero;
 
@@ -164,9 +200,46 @@ public class InteractObjHandling : MonoBehaviour
     {
         if (ghostRb != null && item != null)
         {
-            if (mouseWorldCoords.y > ConveyorHandling.boundFloor) // If you moved ghost to an area within the building range
+            // See if the object is dropping on the grid's collider
+            LayerMask craftMask = LayerMask.GetMask("CraftGrid");
+            Collider2D gridCollider = Physics2D.OverlapPoint(mouseWorldCoords, craftMask);
+
+            if (gridCollider != null) // If item was dropped on grid, find its script component
             {
-                if (!item.GetIsBought()) item.SetIsBought(true); // If item is not already bought, make it so
+                CraftingHandling craft = gridCollider.GetComponent<CraftingHandling>();
+
+                if (craft != null) // If grid has script, try placing it on the grid using CraftingHandling class, which returns a bool saying whether or not the placement succeeded
+                {
+                    bool tryPlace = craft.TryPlaceObject(mouseWorldCoords, ghostRb.transform.rotation, item, grabbedCell);
+
+                    if (!tryPlace && item.GetIsBought())
+                    {
+                        Debug.Log("Couldn't place item");
+                        item.RB.transform.position = trackItem;
+                        item.RB.bodyType = RigidbodyType2D.Dynamic;
+                    }
+                    else if (!tryPlace)
+                    {
+                        Debug.Log("Couldn't place item");
+                        item.RB.bodyType = RigidbodyType2D.Kinematic;
+                    }
+                    else // If the placement succeeded, check if it wasn't already bought, then place the real object where the ghost was. Though, this needs to change to snap
+                    {
+                        if (!item.GetIsBought()) item.SetIsBought(true); // should check if item wasn't rejected
+                        item.RB.transform.position = craft.GetCellCenterLocal(craft.GetHoveredCell().x, craft.GetHoveredCell().y);
+                        item.RB.transform.rotation = ghostRb.transform.rotation;
+                        item.RB.transform.localScale = ghostRb.transform.localScale;
+                        //item.RB.transform.localScale = craft.GetCellCenterLocal();
+                        // Keep as kinematic
+                    }
+                }
+                else Debug.LogWarning("CraftingHandling DNE on grid");
+            }
+
+
+            else if (mouseWorldCoords.y > ConveyorHandling.boundFloor) // If you moved ghost to an area within the building range
+            {
+                if (!item.GetIsBought()) item.SetIsBought(true); // If item is not already bought, make it so()
 
                 item.RB.transform.position = ghostRb.transform.position; // Move real object to ghost object position, rotation, and scale
                 item.RB.transform.rotation = ghostRb.transform.rotation;
@@ -174,11 +247,12 @@ public class InteractObjHandling : MonoBehaviour
                 item.RB.bodyType = RigidbodyType2D.Dynamic; // Make real object dynamic
             }
             else if (item.GetIsBought()) // If you moved ghost to conveyor belt
-            { 
+            {
                 item.RB.transform.position = trackItem; // If it is bought and you drag it back, force it back to build range (you cannot re-place items on conveyor)
                 item.RB.bodyType = RigidbodyType2D.Dynamic; // Make real object dynamic
 
             }
+            else item.RB.bodyType = RigidbodyType2D.Kinematic;
 
             Destroy(ghostInstance); // Destroy the ghost
         }
@@ -194,5 +268,8 @@ public class InteractObjHandling : MonoBehaviour
         press.Dispose();
         pointer.Dispose();
         rightHold.Dispose();
+        fKey.Dispose();
     }
 }
+
+

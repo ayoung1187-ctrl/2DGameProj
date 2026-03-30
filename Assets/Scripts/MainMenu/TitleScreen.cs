@@ -12,7 +12,7 @@ using UnityEngine;
 using UnityEngine.InputSystem;
 using UnityEngine.SceneManagement;
 
-public class TitleScreenM : MonoBehaviour
+public class TitleScreen : MonoBehaviour
 {
     [SerializeField] private InputAction press;
     [SerializeField] private InputAction pointer;

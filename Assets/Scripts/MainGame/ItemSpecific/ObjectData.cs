@@ -3,9 +3,10 @@
  * 
  * Attached To: All buildable objects (SteelBeam, CosmicCircle, WoodenCrate, DecoritiveTriangle, and Sheep)
  * 
- * Last Edited: 3/25/26
+ * Last Edited: 3/29/26
  */
 
+using System.Collections.Generic;
 using UnityEngine;
 
 [RequireComponent(typeof(Rigidbody2D), typeof(Collider2D))]
@@ -18,17 +19,24 @@ public class ObjectData : MonoBehaviour
     [Header("Item Parameters")]
     public string objectID;
     public int cost;
+    public int height;
+    public int width;
 
     // Other variables
     private AudioSource placeSE;
     private bool isBought = false;
 
-    public Rigidbody2D RB { get; private set; }
+    [Header("Grid Shape")]
+    public List<Vector2Int> shapeInCells = new List<Vector2Int>(); // So for the steel beam laying on it's side: (0,0), (1,0), (2,0) to describe its width of 3 units
+
     private void Awake()
     {
         RB = GetComponent<Rigidbody2D>();
         placeSE = GetComponent<AudioSource>();
     }
+
+    // Rigidbody helper
+    public Rigidbody2D RB { get; private set; }
 
     // Used in InteractObjHandling() so that the conveyor will reject a bought item
     public Vector2 GetCurPosition()

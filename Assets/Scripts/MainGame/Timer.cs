@@ -1,18 +1,19 @@
 /* 
- * Purpose:
+ * Purpose: Controls the timer, how it works, and how it's displayed.
  * 
- * Attached To:
+ * Attached To: Timer
  * 
- * Class Function:
- * 
- * Last Edited: 3/20/26
+ * Last Edited: 3/25/26
  */
 
 using UnityEngine;
 using TMPro;
 
-public class TimerS : MonoBehaviour
+public class Timer : MonoBehaviour
 {
+    /*
+     * Field Variables
+     */
     static public float timerWholeSecs = 210; // 3:30
     private int timerMins;
     private int timerSecs;
@@ -23,6 +24,9 @@ public class TimerS : MonoBehaviour
         time = GetComponent<TextMeshProUGUI>();
     }
 
+    /*
+     * Update(): Displays the elasped time while also checking to see if it has reached zero. If so, the timer turns off.
+     */
     void Update()
     {
         timerWholeSecs -= Time.deltaTime;
@@ -39,5 +43,7 @@ public class TimerS : MonoBehaviour
     void TimerEnded()
     {
         Debug.Log("TIMES UP!");
+        Timer timer = GetComponent<Timer>();
+        timer.enabled = false;
     }
 }
