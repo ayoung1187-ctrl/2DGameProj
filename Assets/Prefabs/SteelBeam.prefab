@@ -371,6 +371,7 @@ MonoBehaviour:
   cost: 500
   height: 1
   width: 3
+  scalingFactor: 0.5
   shapeInCells:
   - {x: 0, y: 0}
   - {x: 1, y: 0}

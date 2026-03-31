@@ -207,35 +207,8 @@ public class InteractObjHandling : MonoBehaviour
             if (gridCollider != null) // If item was dropped on grid, find its script component
             {
                 CraftingHandling craft = gridCollider.GetComponent<CraftingHandling>();
-
-                if (craft != null) // If grid has script, try placing it on the grid using CraftingHandling class, which returns a bool saying whether or not the placement succeeded
-                {
-                    bool tryPlace = craft.TryPlaceObject(mouseWorldCoords, ghostRb.transform.rotation, item, grabbedCell);
-
-                    if (!tryPlace && item.GetIsBought())
-                    {
-                        Debug.Log("Couldn't place item");
-                        item.RB.transform.position = trackItem;
-                        item.RB.bodyType = RigidbodyType2D.Dynamic;
-                    }
-                    else if (!tryPlace)
-                    {
-                        Debug.Log("Couldn't place item");
-                        item.RB.bodyType = RigidbodyType2D.Kinematic;
-                    }
-                    else // If the placement succeeded, check if it wasn't already bought, then place the real object where the ghost was. Though, this needs to change to snap
-                    {
-                        if (!item.GetIsBought()) item.SetIsBought(true); // should check if item wasn't rejected
-                        item.RB.transform.position = craft.GetCellCenterLocal(craft.GetHoveredCell().x, craft.GetHoveredCell().y);
-                        item.RB.transform.rotation = ghostRb.transform.rotation;
-                        item.RB.transform.localScale = ghostRb.transform.localScale;
-                        //item.RB.transform.localScale = craft.GetCellCenterLocal();
-                        // Keep as kinematic
-                    }
-                }
-                else Debug.LogWarning("CraftingHandling DNE on grid");
+                OnGridPlacement(craft);
             }
-
 
             else if (mouseWorldCoords.y > ConveyorHandling.boundFloor) // If you moved ghost to an area within the building range
             {
@@ -246,12 +219,14 @@ public class InteractObjHandling : MonoBehaviour
                 item.RB.transform.localScale = ghostRb.transform.localScale;
                 item.RB.bodyType = RigidbodyType2D.Dynamic; // Make real object dynamic
             }
+
             else if (item.GetIsBought()) // If you moved ghost to conveyor belt
             {
                 item.RB.transform.position = trackItem; // If it is bought and you drag it back, force it back to build range (you cannot re-place items on conveyor)
                 item.RB.bodyType = RigidbodyType2D.Dynamic; // Make real object dynamic
 
             }
+
             else item.RB.bodyType = RigidbodyType2D.Kinematic;
 
             Destroy(ghostInstance); // Destroy the ghost
@@ -261,6 +236,36 @@ public class InteractObjHandling : MonoBehaviour
         ghostRb = null;
         selectedCollider = null;
         item = null;
+    }
+
+    private void OnGridPlacement(CraftingHandling craft)
+    {
+        if (craft != null) // If grid has script, try placing it on the grid using CraftingHandling class, which returns a bool saying whether or not the placement succeeded
+        {
+            bool tryPlace = craft.TryPlaceObject(mouseWorldCoords, ghostRb.transform.rotation, item, grabbedCell);
+
+            if (!tryPlace && item.GetIsBought())
+            {
+                Debug.Log("Couldn't place item");
+                item.RB.transform.position = trackItem;
+                item.RB.bodyType = RigidbodyType2D.Dynamic;
+            }
+            else if (!tryPlace)
+            {
+                Debug.Log("Couldn't place item");
+                item.RB.bodyType = RigidbodyType2D.Kinematic;
+            }
+            else // If the placement succeeded, check if it wasn't already bought, then place the real object where the ghost was. Though, this needs to change to snap
+            {
+                if (!item.GetIsBought()) item.SetIsBought(true); // should check if item wasn't rejected
+                Vector2 centered = craft.FindCenterSnap();
+                item.RB.transform.position = new Vector3(centered.x, centered.y, 0.0f); // Snap to center based on how many slots the item takes up
+                item.RB.transform.rotation = Quaternion.Euler(0f, 0f, (float)craft.GetAxis()); // Snap to the closest axis
+                item.RB.transform.localScale = new Vector3(ghostRb.transform.localScale.x * item.scalingFactor, ghostRb.transform.localScale.y * item.scalingFactor, 1f);
+                // Keep as kinematic
+            }
+        }
+        else Debug.LogWarning("CraftingHandling DNE on grid");
     }
 
     private void OnDestroy()

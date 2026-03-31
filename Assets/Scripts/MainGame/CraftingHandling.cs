@@ -17,12 +17,14 @@ public class CraftingHandling : MonoBehaviour
     //private int objWidth;
 
     [SerializeField] private RectTransform grid;
-    [SerializeField] private float gridBoundTolerance = 0.2f;
+    [SerializeField] private GameObject gridDimensions;
 
     private int grabbedCellEquivalent = -1;
     private int axis;
     private int placeCol;
     private int placeRow;
+
+    private List<Vector2Int> revisedCells;
 
 
     void Start ()
@@ -33,6 +35,10 @@ public class CraftingHandling : MonoBehaviour
     public bool TryPlaceObject(Vector2 mouseCoords, Quaternion objRotation, ObjectData inputObj, Vector2Int grabbedCell)
     {
         if (inputObj == null) return false;
+
+        grabbedCellEquivalent = -1;
+        revisedCells = null;
+        axis = 0;
 
         Debug.Log("Entered TryPlaceObject");
 
@@ -117,7 +123,7 @@ public class CraftingHandling : MonoBehaviour
 
 
         // Figure out, based on your primary slot and the relative cells of the shape, what other cells the program should be checking for vacancy
-        List<Vector2Int> revisedCells = GetRelativeCells(GetHoveredCell(), grabbedCell, shapeCells);
+        revisedCells = GetRelativeCells(GetHoveredCell(), grabbedCell, shapeCells);
 
         // For each slot that needs to be checked
         foreach (Vector2Int cell in revisedCells)
@@ -174,14 +180,29 @@ public class CraftingHandling : MonoBehaviour
 
     public Vector2Int GetHoveredCell() { return new Vector2Int(placeCol, placeRow); }
 
-    public Vector3 GetCellCenterLocal(int col, int row)
+    public Vector2 GetCellCenterLocal(int col, int row)
     {
-        float cellWidth = (grid.rect.width - gridBoundTolerance) / 3f;
-        float cellHeight = (grid.rect.height - gridBoundTolerance) / 3f;
 
-        float x = grid.rect.xMin + cellWidth * (col + 0.5f);
-        float y = grid.rect.yMin + cellHeight * (row + 0.5f);
+        Vector2 center = gridDimensions.transform.position;
+        Vector2 widthHeight = new Vector2(gridDimensions.transform.localScale.x / 3f, gridDimensions.transform.localScale.y / 3f);
 
-        return grid.TransformPoint(new Vector3(x, y, 0f));
+        Vector2 localPos = center + new Vector2((col - 1) * widthHeight.x, (row - 1) * widthHeight.y);
+        return localPos;
+    }
+
+    public Vector2 FindCenterSnap()
+    {
+        Vector2 posAdded = new Vector2(0f, 0f);
+        if (revisedCells == null)
+        {
+            return GetCellCenterLocal(placeCol, placeRow);
+        }
+
+        for (int i = 0; i < revisedCells.Count; i++)
+        {
+            posAdded += GetCellCenterLocal(revisedCells[i].x, revisedCells[i].y);
+        }
+
+        return new Vector2(posAdded.x / revisedCells.Count, posAdded.y / revisedCells.Count);
     }
 }

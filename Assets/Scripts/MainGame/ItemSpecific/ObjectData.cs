@@ -21,6 +21,7 @@ public class ObjectData : MonoBehaviour
     public int cost;
     public int height;
     public int width;
+    public float scalingFactor;
 
     // Other variables
     private AudioSource placeSE;

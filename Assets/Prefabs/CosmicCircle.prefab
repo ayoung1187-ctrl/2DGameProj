@@ -174,8 +174,8 @@ MonoBehaviour:
   cost: 100
   height: 1
   width: 1
-  occupiedCells:
-  - {x: 0, y: 0}
+  scalingFactor: 0.9
+  shapeInCells: []
 --- !u!82 &6003208170418568928
 AudioSource:
   m_ObjectHideFlags: 0

@@ -19,6 +19,7 @@ public class PullDownWindowGameObject : MonoBehaviour
 
     [Header("Window Parts")]
     [SerializeField] private GameObject panel;
+    [SerializeField] private GameObject gridGO;
     [SerializeField] private RectTransform content;
     [SerializeField] private RectTransform arrow;
 
@@ -27,6 +28,8 @@ public class PullDownWindowGameObject : MonoBehaviour
     [SerializeField] private Vector2 panelClosedPosition;
     [SerializeField] private Vector2 contentOpenPosition;
     [SerializeField] private Vector2 contentClosedPosition;
+    [SerializeField] private Vector2 gridInvisOpenPosition;
+    [SerializeField] private Vector2 gridInvisClosedPosition;
 
     [Header("Drop Down Speed")]
     [SerializeField] private float speed = 800f;
@@ -51,6 +54,12 @@ public class PullDownWindowGameObject : MonoBehaviour
             Vector2 target = isOpen ? contentOpenPosition : contentClosedPosition;
             content.anchoredPosition = Vector2.MoveTowards(content.anchoredPosition, target, speed * Time.deltaTime);
         }
+
+        if (gridGO != null)
+        {
+            Vector2 target = isOpen ? gridInvisOpenPosition : gridInvisClosedPosition;
+            gridGO.transform.localPosition = Vector2.MoveTowards(gridGO.transform.localPosition, target, speed * Time.deltaTime);
+        }
     }
 
     /*
@@ -72,5 +81,10 @@ public class PullDownWindowGameObject : MonoBehaviour
         Vector3 scale = arrow.localScale;
         scale.y = isOpen ? -Mathf.Abs(scale.y) : Mathf.Abs(scale.y);
         arrow.localScale = scale;
+    }
+
+    public Vector2 GetGridInvisOpen()
+    {
+        return gridInvisClosedPosition;
     }
 }
