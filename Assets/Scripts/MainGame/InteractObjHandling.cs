@@ -16,9 +16,9 @@
  *               !!CHANGE START DRAG'S DESC!!, !!Check 2nd note in start drag!!, !!Change stop drag's desc!!
  */
 
+using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.InputSystem;
-using static UnityEditor.Progress;
 
 public class InteractObjHandling : MonoBehaviour
 {
@@ -47,6 +47,8 @@ public class InteractObjHandling : MonoBehaviour
 
     // Other variables
     private Camera mainCam;
+    [SerializeField] private CraftingHandling craft;
+    public List<Vector2Int> copyOfOldCells = new List<Vector2Int>();
 
     private Vector2 mouseWorldCoords;
     private Vector2 mouseOffset;
@@ -105,16 +107,22 @@ public class InteractObjHandling : MonoBehaviour
         isDragging = true;
 
 
+        // If you're moving an object that was already on the grid, then clear its original position
+        if (item.GetIsOnGrid())
+        {
+            copyOfOldCells = new List<Vector2Int>(item.occupiedCells);
+            // clear the cells that match with item.occupiedCells
+            for (int i = 0; i < item.occupiedCells.Count; i++)
+            {
+                craft.ClearSlots(item.occupiedCells[i]);
+            }
+            item.occupiedCells.Clear();
+        }
+
         // Find where on this item's grid you are grabbing
         if (childCollider != null)
         {
             ObjectShapeCell clickedCell = childCollider.GetComponent<ObjectShapeCell>(); // Find the point of the object that the player is clicking on. Ex: (1,0) would be the middle portion of the horizontal beam.
-            /*if (clickedCell == null)
-            {
-                Debug.Log("clickedCell not originally found");
-                clickedCell = selectedCollider.GetComponentInParent<ObjectShapeCell>();
-            }*/
-
             grabbedCell = clickedCell != null ? clickedCell.LocalCell : Vector2Int.zero; // If this object has relative grid data, find it's local cell. Else, it's local cell is (0,0)
             Debug.Log("Clicked on" + grabbedCell);
         }
@@ -129,16 +137,18 @@ public class InteractObjHandling : MonoBehaviour
         SpriteRenderer sr = ghostInstance.GetComponent<SpriteRenderer>();
         sr.color = new Color(1f, 1f, 1f, 0.5f);
 
+        
         ObjectData ghostBI = ghostInstance.GetComponent<ObjectData>();
         ghostCollider = ghostBI.GetComponent<Collider2D>();
 
         ghostRb = ghostBI.RB;
 
-        // This helps prevent unwanted movement when dragging
+        if (item.GetIsOnGrid())
+        {
+            ghostRb.transform.localScale = new Vector3(0.3f, 0.3f, 1f);
+        }
 
-        //
-        //!!!!Something is breaking here on second pickup!!!!
-        //
+        // This helps prevent unwanted movement when dragging
         ghostRb.angularVelocity = 0;
         ghostRb.linearVelocity = Vector2.zero;
 
@@ -146,7 +156,7 @@ public class InteractObjHandling : MonoBehaviour
         mouseOffset = ghostItemPos2D - mouseWorldCoords;
 
         // This is used in the case that you release a bought item to the conveyor belt, it rejects it
-        trackItem = ghostBI.GetCurPosition();
+        trackItem = ghostBI.transform.position;
 
         ContinueDrag();
     }
@@ -206,7 +216,6 @@ public class InteractObjHandling : MonoBehaviour
 
             if (gridCollider != null) // If item was dropped on grid, find its script component
             {
-                CraftingHandling craft = gridCollider.GetComponent<CraftingHandling>();
                 OnGridPlacement(craft);
             }
 
@@ -218,17 +227,19 @@ public class InteractObjHandling : MonoBehaviour
                 item.RB.transform.rotation = ghostRb.transform.rotation;
                 item.RB.transform.localScale = ghostRb.transform.localScale;
                 item.RB.bodyType = RigidbodyType2D.Dynamic; // Make real object dynamic
+                if (item.GetIsOnGrid()) item.SetIsOnGrid(false);
             }
 
             else if (item.GetIsBought()) // If you moved ghost to conveyor belt
             {
                 item.RB.transform.position = trackItem; // If it is bought and you drag it back, force it back to build range (you cannot re-place items on conveyor)
                 item.RB.bodyType = RigidbodyType2D.Dynamic; // Make real object dynamic
-
+                if (item.GetIsOnGrid()) item.SetIsOnGrid(false);
             }
 
             else item.RB.bodyType = RigidbodyType2D.Kinematic;
 
+            copyOfOldCells.Clear();
             Destroy(ghostInstance); // Destroy the ghost
         }
 
@@ -244,25 +255,44 @@ public class InteractObjHandling : MonoBehaviour
         {
             bool tryPlace = craft.TryPlaceObject(mouseWorldCoords, ghostRb.transform.rotation, item, grabbedCell);
 
-            if (!tryPlace && item.GetIsBought())
+            if (!tryPlace && item.GetIsBought() && !item.GetIsOnGrid())
             {
-                Debug.Log("Couldn't place item");
                 item.RB.transform.position = trackItem;
                 item.RB.bodyType = RigidbodyType2D.Dynamic;
             }
-            else if (!tryPlace)
+            else if (!tryPlace && !item.GetIsOnGrid())
             {
-                Debug.Log("Couldn't place item");
                 item.RB.bodyType = RigidbodyType2D.Kinematic;
+                item.SetIsOnGrid(false);
             }
-            else // If the placement succeeded, check if it wasn't already bought, then place the real object where the ghost was. Though, this needs to change to snap
+            else if (tryPlace && !item.GetIsOnGrid()) // If the placement succeeded, check if it wasn't already bought, then place the real object where the ghost was. AND the item was not already on the grid
             {
                 if (!item.GetIsBought()) item.SetIsBought(true); // should check if item wasn't rejected
                 Vector2 centered = craft.FindCenterSnap();
                 item.RB.transform.position = new Vector3(centered.x, centered.y, 0.0f); // Snap to center based on how many slots the item takes up
                 item.RB.transform.rotation = Quaternion.Euler(0f, 0f, (float)craft.GetAxis()); // Snap to the closest axis
                 item.RB.transform.localScale = new Vector3(ghostRb.transform.localScale.x * item.scalingFactor, ghostRb.transform.localScale.y * item.scalingFactor, 1f);
+                item.SetIsOnGrid(true);
+                if (item.RB.bodyType != RigidbodyType2D.Kinematic) item.RB.bodyType = RigidbodyType2D.Kinematic;
                 // Keep as kinematic
+            }
+            else if (!tryPlace && item.GetIsOnGrid()) // If placement failed and item was already on grid
+            {
+                item.RB.transform.position = trackItem;
+                for (int i = 0; i < item.shapeInCells.Count; i++)
+                {
+                    craft.ForceOccupySlots(copyOfOldCells[i], item);
+                }
+                item.occupiedCells = copyOfOldCells;
+                if (item.RB.bodyType != RigidbodyType2D.Kinematic) item.RB.bodyType = RigidbodyType2D.Kinematic;
+            }
+            else if (tryPlace && item.GetIsOnGrid()) // If placement succeeded and item was already on grid
+            {
+                Vector2 centered = craft.FindCenterSnap();
+                item.RB.transform.position = new Vector3(centered.x, centered.y, 0.0f); // Snap to center based on how many slots the item takes up
+                item.RB.transform.rotation = Quaternion.Euler(0f, 0f, (float)craft.GetAxis()); // Snap to the closest axis
+                item.RB.transform.localScale = new Vector3(ghostRb.transform.localScale.x * item.scalingFactor, ghostRb.transform.localScale.y * item.scalingFactor, 1f);
+                if (item.RB.bodyType != RigidbodyType2D.Kinematic) item.RB.bodyType = RigidbodyType2D.Kinematic;
             }
         }
         else Debug.LogWarning("CraftingHandling DNE on grid");

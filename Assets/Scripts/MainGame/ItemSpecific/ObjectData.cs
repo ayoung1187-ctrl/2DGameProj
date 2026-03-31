@@ -26,9 +26,11 @@ public class ObjectData : MonoBehaviour
     // Other variables
     private AudioSource placeSE;
     private bool isBought = false;
+    private bool isOnGrid = false;
 
     [Header("Grid Shape")]
     public List<Vector2Int> shapeInCells = new List<Vector2Int>(); // So for the steel beam laying on it's side: (0,0), (1,0), (2,0) to describe its width of 3 units
+    public List<Vector2Int> occupiedCells = new List<Vector2Int>();
 
     private void Awake()
     {
@@ -55,6 +57,10 @@ public class ObjectData : MonoBehaviour
     {
         this.isBought = isBought;
     }
+
+    public bool GetIsOnGrid() { return isOnGrid; }
+
+    public void SetIsOnGrid(bool setter) { this.isOnGrid = setter; }
 
     // Audio player handler
     void OnCollisionEnter2D()

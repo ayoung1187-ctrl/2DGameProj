@@ -62,6 +62,7 @@ public class CraftingHandling : MonoBehaviour
             {
                 Debug.Log("Placement Successful");
                 gridMat[placeCol, placeRow] = inputObj;
+                inputObj.occupiedCells.Add(new Vector2Int(placeCol, placeRow));
                 return true;
             }
             else
@@ -147,7 +148,10 @@ public class CraftingHandling : MonoBehaviour
         foreach (Vector2Int cell in revisedCells)
         {
             gridMat[cell.x, cell.y] = inputObj;
+
         }
+
+        inputObj.occupiedCells = new List<Vector2Int>(revisedCells);
 
         Debug.Log("Placement succeeded.");
         return true;
@@ -204,5 +208,15 @@ public class CraftingHandling : MonoBehaviour
         }
 
         return new Vector2(posAdded.x / revisedCells.Count, posAdded.y / revisedCells.Count);
+    }
+
+    public void ClearSlots(Vector2Int slot)
+    {
+        gridMat[slot.x, slot.y] = null;
+    }
+
+    public void ForceOccupySlots(Vector2Int slot, ObjectData item)
+    {
+        gridMat[slot.x, slot.y] = item;
     }
 }

@@ -159,7 +159,7 @@ PolygonCollider2D:
   m_Offset: {x: 0, y: 0}
   m_SpriteTilingProperty:
     border: {x: 0, y: 0, z: 0, w: 0}
-    pivot: {x: 0.25645116, y: 0.33692095}
+    pivot: {x: 0.5, y: 0.5}
     oldSize: {x: 4.95, y: 3.32}
     newSize: {x: 1, y: 1}
     adaptiveTilingThreshold: 0.5
@@ -168,9 +168,9 @@ PolygonCollider2D:
   m_AutoTiling: 0
   m_Points:
     m_Paths:
-    - - {x: -1.2595557, y: 2.2766259}
-      - {x: -1.3124193, y: -1.1483055}
-      - {x: 3.7825596, y: -1.1142703}
+    - - {x: -2.5234764, y: 1.8160473}
+      - {x: -2.5013587, y: -1.694575}
+      - {x: 2.7221565, y: -1.671251}
   m_UseDelaunayMesh: 1
 --- !u!114 &3466226633692811398
 MonoBehaviour:
@@ -190,6 +190,7 @@ MonoBehaviour:
   width: 1
   scalingFactor: 0.5
   shapeInCells: []
+  occupiedCells: []
 --- !u!82 &2873729549261042275
 AudioSource:
   m_ObjectHideFlags: 0

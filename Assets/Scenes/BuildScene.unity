@@ -1277,6 +1277,8 @@ MonoBehaviour:
       m_Flags: 0
     m_Flags: 0
   rotationSpeed: 45
+  craft: {fileID: 1535512103}
+  copyOfOldCells: []
 --- !u!82 &519420034
 AudioSource:
   m_ObjectHideFlags: 0
