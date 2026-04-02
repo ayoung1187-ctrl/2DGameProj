@@ -367,7 +367,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 3ef18e432545d0d40a350800460cce49, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::SquareS
-  objectID: 001
+  objectID: SteelBeam
   cost: 500
   height: 1
   width: 3
@@ -376,6 +376,7 @@ MonoBehaviour:
   - {x: 0, y: 0}
   - {x: 1, y: 0}
   - {x: 2, y: 0}
+  occupiedCells: []
 --- !u!82 &6357309257449228270
 AudioSource:
   m_ObjectHideFlags: 0

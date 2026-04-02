@@ -95,9 +95,10 @@ public class ConveyorHandling : MonoBehaviour
      */
     void SpawnItems()
     {
-        int randNum = Random.Range(0, 5);
-        
-        switch (randNum)
+        //int randNum = Random.Range(0, 5);
+        int randNum = Random.Range(0, 2);
+
+        /*switch (randNum)
         {
             case 0:
                 itemInstance = Instantiate<GameObject>(decorativeTriangle);
@@ -126,9 +127,23 @@ public class ConveyorHandling : MonoBehaviour
                 break;
             default:
                 return;
+        }*/
+
+        switch (randNum)
+        {
+            case 0:
+                itemInstance = Instantiate<GameObject>(decorativeTriangle);
+                itemInstance.transform.position = itemSpawnPoint;
+                spawnedItems.Add(itemInstance);
+                break;
+            case 1:
+                itemInstance = Instantiate<GameObject>(steelBeam);
+                itemInstance.transform.position = itemSpawnPoint;
+                spawnedItems.Add(itemInstance);
+                break;
         }
 
-        Invoke("SpawnItems", 5f);
+            Invoke("SpawnItems", 5f);
     }
 
     /*

@@ -13,7 +13,7 @@
  * Edit 3/19/26: I realized I don't know if I want joint physics for dragging, so I updated this class to have drag be kinematic.
  *               The plan is to make the objects kinematic whilst on the conveyor belt and during drag, and dynamic otherwise.
  *               
- *               !!CHANGE START DRAG'S DESC!!, !!Check 2nd note in start drag!!, !!Change stop drag's desc!!
+ *               !!CHANGE START DRAG'S DESC!!, !!Change stop drag's desc!!, !!there's an issue where, if you drag object on grid back to water, it clears it from occupancy!!
  */
 
 using System.Collections.Generic;
@@ -54,7 +54,10 @@ public class InteractObjHandling : MonoBehaviour
     private Vector2 mouseOffset;
     private Vector2 trackItem;
 
+    private Collider2D buttonCollider;
+
     private bool isDragging = false;
+    public bool isSheepUtilized = false;
 
     /*
      * Awake(): This function enables input actions and defines responses to clicking and letting go.
@@ -93,13 +96,23 @@ public class InteractObjHandling : MonoBehaviour
         LayerMask objectLayer = LayerMask.GetMask("Objects"); // Make it so that this script will only detect building objects
         selectedCollider = Physics2D.OverlapPoint(mouseWorldCoords, objectLayer);
 
+        LayerMask buttonLayer = LayerMask.GetMask("CraftButton");
+        buttonCollider = Physics2D.OverlapPoint(mouseWorldCoords, buttonLayer);
+
+        if (buttonCollider != null && selectedCollider == null)
+        {
+            craft.CraftButtonIsPressed();
+            return;
+        }
+        
+        // If no object exists here, do nothing
+        if (selectedCollider == null) return;
+
         // Now find which child collider, if any, the mouse is clicking on and relate that to the object's personal grid
         LayerMask childLayer = LayerMask.GetMask("ChildColliders");
         Collider2D childCollider = Physics2D.OverlapPoint(mouseWorldCoords, childLayer);
 
-
-        // If no object exists here, do nothing
-        if (selectedCollider == null) return;
+        // If childCollider == null, move on-- it doesn't matter
 
         item = selectedCollider.GetComponent<ObjectData>();
         if (item == null || item.RB == null) return; // If collider has no ObjectData script or Rigidbody2D components, do nothing
@@ -124,7 +137,7 @@ public class InteractObjHandling : MonoBehaviour
         {
             ObjectShapeCell clickedCell = childCollider.GetComponent<ObjectShapeCell>(); // Find the point of the object that the player is clicking on. Ex: (1,0) would be the middle portion of the horizontal beam.
             grabbedCell = clickedCell != null ? clickedCell.LocalCell : Vector2Int.zero; // If this object has relative grid data, find it's local cell. Else, it's local cell is (0,0)
-            Debug.Log("Clicked on" + grabbedCell);
+            //Debug.Log("Clicked on" + grabbedCell);
         }
         else
         {
@@ -221,20 +234,31 @@ public class InteractObjHandling : MonoBehaviour
 
             else if (mouseWorldCoords.y > ConveyorHandling.boundFloor) // If you moved ghost to an area within the building range
             {
-                if (!item.GetIsBought()) item.SetIsBought(true); // If item is not already bought, make it so()
+                if (!item.GetIsBought())
+                {
+                    item.SetIsBought(true); // If item is not already bought, make it so()
+                    if (item.objectID == "Sheep")
+                    {
+                        isSheepUtilized = true;
+                    }
+                }
 
                 item.RB.transform.position = ghostRb.transform.position; // Move real object to ghost object position, rotation, and scale
                 item.RB.transform.rotation = ghostRb.transform.rotation;
                 item.RB.transform.localScale = ghostRb.transform.localScale;
                 item.RB.bodyType = RigidbodyType2D.Dynamic; // Make real object dynamic
+                if (selectedCollider.isTrigger) selectedCollider.isTrigger = false;
                 if (item.GetIsOnGrid()) item.SetIsOnGrid(false);
             }
 
             else if (item.GetIsBought()) // If you moved ghost to conveyor belt
             {
                 item.RB.transform.position = trackItem; // If it is bought and you drag it back, force it back to build range (you cannot re-place items on conveyor)
-                item.RB.bodyType = RigidbodyType2D.Dynamic; // Make real object dynamic
-                if (item.GetIsOnGrid()) item.SetIsOnGrid(false);
+                if (item.GetIsOnGrid()) 
+                {
+                    if (item.RB.bodyType != RigidbodyType2D.Kinematic) item.RB.bodyType = RigidbodyType2D.Kinematic;
+                }
+                else item.RB.bodyType = RigidbodyType2D.Dynamic; // Make real object dynamic
             }
 
             else item.RB.bodyType = RigidbodyType2D.Kinematic;
@@ -273,7 +297,9 @@ public class InteractObjHandling : MonoBehaviour
                 item.RB.transform.rotation = Quaternion.Euler(0f, 0f, (float)craft.GetAxis()); // Snap to the closest axis
                 item.RB.transform.localScale = new Vector3(ghostRb.transform.localScale.x * item.scalingFactor, ghostRb.transform.localScale.y * item.scalingFactor, 1f);
                 item.SetIsOnGrid(true);
+                if (!selectedCollider.isTrigger) selectedCollider.isTrigger = true;
                 if (item.RB.bodyType != RigidbodyType2D.Kinematic) item.RB.bodyType = RigidbodyType2D.Kinematic;
+                craft.CheckAllRecipes();
                 // Keep as kinematic
             }
             else if (!tryPlace && item.GetIsOnGrid()) // If placement failed and item was already on grid
@@ -284,6 +310,7 @@ public class InteractObjHandling : MonoBehaviour
                     craft.ForceOccupySlots(copyOfOldCells[i], item);
                 }
                 item.occupiedCells = copyOfOldCells;
+                if (!selectedCollider.isTrigger) selectedCollider.isTrigger = true;
                 if (item.RB.bodyType != RigidbodyType2D.Kinematic) item.RB.bodyType = RigidbodyType2D.Kinematic;
             }
             else if (tryPlace && item.GetIsOnGrid()) // If placement succeeded and item was already on grid
@@ -292,7 +319,9 @@ public class InteractObjHandling : MonoBehaviour
                 item.RB.transform.position = new Vector3(centered.x, centered.y, 0.0f); // Snap to center based on how many slots the item takes up
                 item.RB.transform.rotation = Quaternion.Euler(0f, 0f, (float)craft.GetAxis()); // Snap to the closest axis
                 item.RB.transform.localScale = new Vector3(ghostRb.transform.localScale.x * item.scalingFactor, ghostRb.transform.localScale.y * item.scalingFactor, 1f);
+                if (!selectedCollider.isTrigger) selectedCollider.isTrigger = true;
                 if (item.RB.bodyType != RigidbodyType2D.Kinematic) item.RB.bodyType = RigidbodyType2D.Kinematic;
+                craft.CheckAllRecipes();
             }
         }
         else Debug.LogWarning("CraftingHandling DNE on grid");

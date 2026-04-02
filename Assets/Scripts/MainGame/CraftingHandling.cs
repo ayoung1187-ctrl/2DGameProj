@@ -4,20 +4,23 @@
  * Attached To: CraftingGrid
  * 
  * Last Edited: 3/29/26
+ * 
+ * !! There's a bug if you drag from crafting grid back to water and placement is valid, the light doesn't light back up !!
  */
 
 using System.Collections.Generic;
+using Unity.VisualScripting;
 using UnityEngine;
+using UnityEngine.InputSystem.Processors;
 
 public class CraftingHandling : MonoBehaviour
 {
     private ObjectData[,] gridMat = new ObjectData[3,3];
 
-    //private int objHeight;
-    //private int objWidth;
-
     [SerializeField] private RectTransform grid;
     [SerializeField] private GameObject gridDimensions;
+    [SerializeField] private CraftButton craftButton;
+    [SerializeField] private List<Recipe> allRecipes;
 
     private int grabbedCellEquivalent = -1;
     private int axis;
@@ -25,6 +28,14 @@ public class CraftingHandling : MonoBehaviour
     private int placeRow;
 
     private List<Vector2Int> revisedCells;
+
+    public bool fireButtonIsLit = false;
+
+    private GameObject craftableItem;
+
+    private Vector3 instantiatePos;
+
+    public bool oneItemCrafted = false;
 
 
     void Start ()
@@ -40,17 +51,13 @@ public class CraftingHandling : MonoBehaviour
         revisedCells = null;
         axis = 0;
 
-        Debug.Log("Entered TryPlaceObject");
 
         // Find the primary slot which the mouse is hovering over
         placeCol = (int)(mouseCoords.x - grid.anchoredPosition.x); // 2.405 -> 2
-        Debug.Log(mouseCoords.x + "-" + grid.anchoredPosition.x + "=" + placeCol);
         placeRow = (int)(mouseCoords.y - grid.anchoredPosition.y); // 1.205 -> 1
-        Debug.Log(mouseCoords.y + "-" + grid.anchoredPosition.y + "=" + placeRow);
 
         if (placeRow < 0 || placeRow > 2 || placeCol < 0 || placeCol > 2)
         {
-            Debug.Log("Anchor slot is out of bounds.");
             return false;
         }
 
@@ -60,7 +67,6 @@ public class CraftingHandling : MonoBehaviour
         { 
             if (gridMat[placeCol, placeRow] == null)
             {
-                Debug.Log("Placement Successful");
                 gridMat[placeCol, placeRow] = inputObj;
                 inputObj.occupiedCells.Add(new Vector2Int(placeCol, placeRow));
                 return true;
@@ -79,7 +85,6 @@ public class CraftingHandling : MonoBehaviour
 
         // The object can only be rotated on the axes for the grid, so 90 degree angles
         axis = (int)Mathf.Round(objRotation.eulerAngles.z / 90f) * 90; // should return 0, 90, 180, or 270
-        Debug.Log("Axis:" + axis);
 
         for (int i = 0; i < shapeCells.Count; i++)
         {
@@ -91,7 +96,6 @@ public class CraftingHandling : MonoBehaviour
 
         if (grabbedCellEquivalent == -1)
         {
-            Debug.LogError("grabbedCell was not found in shapeCells");
             return false;
         }
 
@@ -105,7 +109,6 @@ public class CraftingHandling : MonoBehaviour
                     shapeCells[i] = new Vector2Int(shapeCells[i].y, shapeCells[i].x);
                 }
                 grabbedCell = shapeCells[grabbedCellEquivalent];
-                Debug.Log("new: grabbedCell -> " + grabbedCell);
                 break;
             case 180:
                 shapeCells.Reverse();
@@ -132,14 +135,12 @@ public class CraftingHandling : MonoBehaviour
             // If the object goes out of grid bounds, return failure
             if (cell.x < 0 || cell.x > 2 || cell.y < 0 || cell.y > 2)
             {
-                Debug.Log("Out of bounds at {" + cell.x + ", " + cell.y + "}");
                 return false;
             }
 
             // If the necessary space is already occupied, return failure
             if (gridMat[cell.x, cell.y] != null)
             {
-                Debug.Log("Occupied at  " + cell.x + cell.y);
                 return false;
             }
         }
@@ -153,7 +154,8 @@ public class CraftingHandling : MonoBehaviour
 
         inputObj.occupiedCells = new List<Vector2Int>(revisedCells);
 
-        Debug.Log("Placement succeeded.");
+        CheckAllRecipes();
+
         return true;
     }
 
@@ -213,10 +215,143 @@ public class CraftingHandling : MonoBehaviour
     public void ClearSlots(Vector2Int slot)
     {
         gridMat[slot.x, slot.y] = null;
+        CheckAllRecipes();
+    }
+
+    private void ClearAllSlots()
+    {
+        for (int x = 0; x < 3; x++)
+        {
+            for (int y = 0; y < 3; y++)
+            {
+                if (gridMat[x, y] != null)
+                {
+                    gridMat[x, y].occupiedCells.Clear();
+                    Destroy(gridMat[x, y].gameObject);
+                    gridMat[x, y] = null;
+                }
+            }
+        }
     }
 
     public void ForceOccupySlots(Vector2Int slot, ObjectData item)
     {
         gridMat[slot.x, slot.y] = item;
+        CheckAllRecipes();
+    }
+
+    public bool CheckRecipe(Recipe recipe)
+    {
+        Debug.Log("Got in checkrecipe()");
+        /*List<RecipeIngredients> gridState = new List<RecipeIngredients>();
+        HashSet<ObjectData> seen = new HashSet<ObjectData>();
+        for (int x = 0; x < 3; x++)
+        {
+            for (int y = 0; y < 3; y++)
+            {
+                if (gridMat[x, y] != null && !seen.Contains(gridMat[x, y]))
+                {
+                    seen.Add(gridMat[x, y]);
+                    gridState.Add(new RecipeIngredients(gridMat[x, y].objectID, new Vector2Int(x, y)));
+                }
+            }
+        }
+        Debug.Log("gridState made");*/
+
+        List<RecipeIngredients> gridState = new List<RecipeIngredients>();
+        for (int x = 0; x < 3; x++)
+        {
+            for (int y = 0; y < 3; y++)
+            {
+                if (gridMat[x, y] != null)
+                {
+                    string id = gridMat[x, y].objectID;
+                    Vector2Int coords = new Vector2Int(x, y);
+                    gridState.Add(new RecipeIngredients(id, coords));
+                }
+            }
+        }
+
+        if (gridState.Count != recipe.ingredients.Count) // If there's less than 3 items on the table, return
+        {
+            return false;
+        }
+        Debug.Log("got past count conditional");
+
+        // Normalize
+        Vector2Int gridMin = gridState[0].cell;
+        foreach (var e in gridState) gridMin = Vector2Int.Min(gridMin, e.cell);
+
+        Vector2Int recipeMin = recipe.ingredients[0].cell;
+        foreach (var e in recipe.ingredients) recipeMin = Vector2Int.Min(recipeMin, e.cell);
+
+        Debug.Log("got past normalization");
+
+        for (int i = 0; i < recipe.ingredients.Count; i++)
+        {
+            Vector2Int normalizedRecipeCell = recipe.ingredients[i].cell - recipeMin;
+            bool found = false;
+
+            for (int j = 0; j < gridState.Count; j++)
+            {
+                Vector2Int normalizedGridCell = gridState[j].cell - gridMin;
+
+                Debug.Log("if (" + normalizedGridCell + " == " + normalizedRecipeCell + " && " + gridState[j].objectID + " == " + recipe.ingredients[i].objectID + ")");
+
+                if (normalizedGridCell == normalizedRecipeCell && gridState[j].objectID == recipe.ingredients[i].objectID)
+                {
+                    found = true;
+                    break;
+                }
+            }
+
+            if (!found) return false;
+        }
+
+        return true;
+    }
+    
+    public void CheckAllRecipes()
+    {
+        foreach (Recipe recipe in allRecipes)
+        {
+            if (CheckRecipe(recipe))
+            {
+                craftableItem = recipe.resultGO;
+                if (!fireButtonIsLit) // Doing these if statements to prevent unnecessary repitition
+                {
+                    fireButtonIsLit = true;
+                    craftButton.ChangeButtonImageOn();
+                }
+                return;
+            }
+        }
+
+        // If no recipes match
+        craftableItem = null;
+        if (fireButtonIsLit)
+        {
+            fireButtonIsLit = false;
+            craftButton.ChangeButtonImageOff();
+        }
+    }
+
+    public void CraftButtonIsPressed()
+    {
+        // If the button is grayed out, do nothing
+        if (!fireButtonIsLit)
+        {
+            return;
+        }
+
+        // else, delete the objects on the grid, deactivate the grid, and instantiate the resulting object where the grid was.
+        ClearAllSlots();
+        grid.gameObject.SetActive(false);
+        craftButton.ChangeButtonImageOff();
+        oneItemCrafted = true;
+
+        instantiatePos = gridDimensions.transform.position;
+        GameObject result = Instantiate(craftableItem);
+        result.transform.position = instantiatePos;
     }
 }

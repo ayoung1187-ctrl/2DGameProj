@@ -1,10 +1,10 @@
 fileFormatVersion: 2
-guid: 860c0a005583e044f953f76c8d0c738d
+guid: 96c3197b88b579a41bcf56c19b4efd2f
 TextureImporter:
   internalIDToNameTable:
   - first:
-      213: -4937803984439019196
-    second: Untitled_Artwork (6)_0
+      213: -1088045335298416190
+    second: IMG_4853-trim_0
   externalObjects: {}
   serializedVersion: 13
   mipmaps:
@@ -113,13 +113,13 @@ TextureImporter:
     serializedVersion: 2
     sprites:
     - serializedVersion: 2
-      name: Untitled_Artwork (6)_0
+      name: IMG_4853-trim_0
       rect:
         serializedVersion: 2
         x: 0
         y: 0
-        width: 1920
-        height: 1080
+        width: 397
+        height: 398
       alignment: 0
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
@@ -128,8 +128,8 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: -1
       bones: []
-      spriteID: 449f0011075697bb0800000000000000
-      internalID: -4937803984439019196
+      spriteID: 2c16402488c76e0f0800000000000000
+      internalID: -1088045335298416190
       vertices: []
       indices: 
       edges: []
@@ -148,7 +148,7 @@ TextureImporter:
     spriteCustomMetadata:
       entries: []
     nameFileIdTable:
-      Untitled_Artwork (6)_0: -4937803984439019196
+      IMG_4853-trim_0: -1088045335298416190
   mipmapLimitGroupName: 
   pSDRemoveMatte: 0
   userData: 

@@ -22,6 +22,8 @@ public class PullDownWindowGameObject : MonoBehaviour
     [SerializeField] private GameObject gridGO;
     [SerializeField] private RectTransform content;
     [SerializeField] private RectTransform arrow;
+    [SerializeField] private GameObject misc1;
+    [SerializeField] private GameObject misc2;
 
     [Header("Positions")]
     [SerializeField] private Vector2 panelOpenPosition;
@@ -30,6 +32,10 @@ public class PullDownWindowGameObject : MonoBehaviour
     [SerializeField] private Vector2 contentClosedPosition;
     [SerializeField] private Vector2 gridInvisOpenPosition;
     [SerializeField] private Vector2 gridInvisClosedPosition;
+    [SerializeField] private Vector2 misc1OpenPosition;
+    [SerializeField] private Vector2 misc1ClosedPosition;
+    [SerializeField] private Vector2 misc2OpenPosition;
+    [SerializeField] private Vector2 misc2ClosedPosition;
 
     [Header("Drop Down Speed")]
     [SerializeField] private float speed = 800f;
@@ -59,6 +65,18 @@ public class PullDownWindowGameObject : MonoBehaviour
         {
             Vector2 target = isOpen ? gridInvisOpenPosition : gridInvisClosedPosition;
             gridGO.transform.localPosition = Vector2.MoveTowards(gridGO.transform.localPosition, target, speed * Time.deltaTime);
+        }
+
+        if (misc1 != null)
+        {
+            Vector2 target = isOpen ? misc1OpenPosition : misc1ClosedPosition;
+            misc1.transform.localPosition = Vector2.MoveTowards(misc1.transform.localPosition, target, speed * Time.deltaTime);
+        }
+
+        if (misc2 != null)
+        {
+            Vector2 target = isOpen ? misc2OpenPosition : misc2ClosedPosition;
+            misc2.transform.localPosition = Vector2.MoveTowards(misc2.transform.localPosition, target, speed * Time.deltaTime);
         }
     }
 

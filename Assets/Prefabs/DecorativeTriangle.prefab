@@ -184,7 +184,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 3ef18e432545d0d40a350800460cce49, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::SquareS
-  objectID: 010
+  objectID: DecorativeTriangle
   cost: 250
   height: 1
   width: 1

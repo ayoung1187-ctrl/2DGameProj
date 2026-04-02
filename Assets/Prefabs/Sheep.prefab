@@ -344,12 +344,13 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 3ef18e432545d0d40a350800460cce49, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::BuildItem
-  objectID: 100
+  objectID: Sheep
   cost: 75
   height: 2
   width: 2
   scalingFactor: 0.55
   shapeInCells: []
+  occupiedCells: []
 --- !u!82 &2288020339443579154
 AudioSource:
   m_ObjectHideFlags: 0
