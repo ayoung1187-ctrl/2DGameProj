@@ -9,9 +9,7 @@
  */
 
 using System.Collections.Generic;
-using Unity.VisualScripting;
 using UnityEngine;
-using UnityEngine.InputSystem.Processors;
 
 public class CraftingHandling : MonoBehaviour
 {
@@ -21,6 +19,9 @@ public class CraftingHandling : MonoBehaviour
     [SerializeField] private GameObject gridDimensions;
     [SerializeField] private CraftButton craftButton;
     [SerializeField] private List<Recipe> allRecipes;
+    [SerializeField] private PullDownWindowGameObject pullDown;
+
+    [SerializeField] private GameHost GH;
 
     private int grabbedCellEquivalent = -1;
     private int axis;
@@ -37,6 +38,8 @@ public class CraftingHandling : MonoBehaviour
 
     public bool oneItemCrafted = false;
 
+    static public int numCraftedItems = 0;
+    static public int craftedItemsValue = 0;
 
     void Start ()
     {
@@ -242,21 +245,6 @@ public class CraftingHandling : MonoBehaviour
 
     public bool CheckRecipe(Recipe recipe)
     {
-        Debug.Log("Got in checkrecipe()");
-        /*List<RecipeIngredients> gridState = new List<RecipeIngredients>();
-        HashSet<ObjectData> seen = new HashSet<ObjectData>();
-        for (int x = 0; x < 3; x++)
-        {
-            for (int y = 0; y < 3; y++)
-            {
-                if (gridMat[x, y] != null && !seen.Contains(gridMat[x, y]))
-                {
-                    seen.Add(gridMat[x, y]);
-                    gridState.Add(new RecipeIngredients(gridMat[x, y].objectID, new Vector2Int(x, y)));
-                }
-            }
-        }
-        Debug.Log("gridState made");*/
 
         List<RecipeIngredients> gridState = new List<RecipeIngredients>();
         for (int x = 0; x < 3; x++)
@@ -276,7 +264,6 @@ public class CraftingHandling : MonoBehaviour
         {
             return false;
         }
-        Debug.Log("got past count conditional");
 
         // Normalize
         Vector2Int gridMin = gridState[0].cell;
@@ -284,8 +271,6 @@ public class CraftingHandling : MonoBehaviour
 
         Vector2Int recipeMin = recipe.ingredients[0].cell;
         foreach (var e in recipe.ingredients) recipeMin = Vector2Int.Min(recipeMin, e.cell);
-
-        Debug.Log("got past normalization");
 
         for (int i = 0; i < recipe.ingredients.Count; i++)
         {
@@ -348,10 +333,33 @@ public class CraftingHandling : MonoBehaviour
         ClearAllSlots();
         grid.gameObject.SetActive(false);
         craftButton.ChangeButtonImageOff();
-        oneItemCrafted = true;
+        fireButtonIsLit = false;
+        if (!oneItemCrafted)
+        {
+            oneItemCrafted = true;
+        }
 
         instantiatePos = gridDimensions.transform.position;
         GameObject result = Instantiate(craftableItem);
+        ObjectData resultOD = result.GetComponent<ObjectData>();
+        resultOD.SetIsBought(true);
         result.transform.position = instantiatePos;
+
+        GH.HostComment(resultOD.hostComment);
+
+        numCraftedItems++;
+        craftedItemsValue += resultOD.cost;
+    }
+
+    public bool IsGridActive()
+    {
+        return grid.gameObject.activeSelf;
+    }
+
+    public void ResetGrid()
+    {
+        grid.gameObject.SetActive(true);
+        craftableItem = null;
+        pullDown.Toggle();
     }
 }

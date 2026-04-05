@@ -27,16 +27,21 @@ public class ObjectData : MonoBehaviour
     private AudioSource placeSE;
     private bool isBought = false;
     private bool isOnGrid = false;
-    [SerializeField] private bool isCraftedItem;
+    public bool isCraftedItem;
+
+    public Vector3 normalScale;
 
     [Header("Grid Shape")]
     public List<Vector2Int> shapeInCells = new List<Vector2Int>(); // So for the steel beam laying on it's side: (0,0), (1,0), (2,0) to describe its width of 3 units
     public List<Vector2Int> occupiedCells = new List<Vector2Int>();
 
+    public string hostComment;
+
     private void Awake()
     {
         RB = GetComponent<Rigidbody2D>();
         placeSE = GetComponent<AudioSource>();
+        normalScale = gameObject.transform.localScale;
         if (placeSE == null)
         {
             Debug.LogWarning("No sound initialized");

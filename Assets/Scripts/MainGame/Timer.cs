@@ -8,19 +8,23 @@
 
 using UnityEngine;
 using TMPro;
+using UnityEngine.SceneManagement;
 
 public class Timer : MonoBehaviour
 {
     /*
      * Field Variables
      */
-    static public float timerWholeSecs = 210; // 3:30
+    static public float timerWholeSecs; //210; // 3:30
     private int timerMins;
     private int timerSecs;
+    [SerializeField] private ConveyorHandling conveyor;
+    [SerializeField] InteractObjHandling interactObjHandling;
     TextMeshProUGUI time;
 
     void Start()
     {
+        timerWholeSecs = 90;
         time = GetComponent<TextMeshProUGUI>();
     }
 
@@ -43,7 +47,10 @@ public class Timer : MonoBehaviour
     void TimerEnded()
     {
         Debug.Log("TIMES UP!");
+        conveyor.enabled = false;
+        interactObjHandling.enabled = false;
         Timer timer = GetComponent<Timer>();
         timer.enabled = false;
+        SceneManager.LoadScene("EndGame", LoadSceneMode.Additive);
     }
 }

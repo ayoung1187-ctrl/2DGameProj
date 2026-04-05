@@ -1,0 +1,782 @@
+fileFormatVersion: 2
+guid: 23ec98be9fc8e77438e5a3668a42ec8f
+TextureImporter:
+  internalIDToNameTable:
+  - first:
+      213: -745528932132766998
+    second: GMTalk_0
+  - first:
+      213: 3493690616571959945
+    second: GMTalk_1
+  - first:
+      213: 5364962903818668807
+    second: GMTalk_2
+  - first:
+      213: 8601106017386755803
+    second: GMTalk_3
+  - first:
+      213: 5848214730933425957
+    second: GMTalk_4
+  - first:
+      213: -8767867755146811878
+    second: GMTalk_5
+  - first:
+      213: -864751697398974743
+    second: GMTalk_6
+  - first:
+      213: -7690666995130563058
+    second: GMTalk_7
+  - first:
+      213: -1711440200734839629
+    second: GMTalk_8
+  - first:
+      213: 3618225085917055478
+    second: GMTalk_9
+  - first:
+      213: -713038272196732567
+    second: GMTalk_10
+  - first:
+      213: -4406670973256279037
+    second: GMTalk_11
+  - first:
+      213: 116251703064491902
+    second: GMTalk_12
+  - first:
+      213: 1933703903765131126
+    second: GMTalk_13
+  - first:
+      213: 3449149985355195190
+    second: GMTalk_14
+  - first:
+      213: 8361410566863759231
+    second: GMTalk_15
+  - first:
+      213: 2073132667711801253
+    second: GMTalk_16
+  - first:
+      213: -2510630188902948238
+    second: GMTalk_17
+  - first:
+      213: -846845569965284559
+    second: GMTalk_18
+  - first:
+      213: 7980530748003213806
+    second: GMTalk_19
+  - first:
+      213: -2039379384027536726
+    second: GMTalk_20
+  - first:
+      213: -134725575714344104
+    second: GMTalk_21
+  - first:
+      213: -9061662963035086188
+    second: GMTalk_22
+  - first:
+      213: 3338757996020793916
+    second: GMTalk_23
+  - first:
+      213: 8828035603903850318
+    second: GMTalk_24
+  externalObjects: {}
+  serializedVersion: 13
+  mipmaps:
+    mipMapMode: 0
+    enableMipMap: 0
+    sRGBTexture: 1
+    linearTexture: 0
+    fadeOut: 0
+    borderMipMap: 0
+    mipMapsPreserveCoverage: 0
+    alphaTestReferenceValue: 0.5
+    mipMapFadeDistanceStart: 1
+    mipMapFadeDistanceEnd: 3
+  bumpmap:
+    convertToNormalMap: 0
+    externalNormalMap: 0
+    heightScale: 0.25
+    normalMapFilter: 0
+    flipGreenChannel: 0
+  isReadable: 0
+  streamingMipmaps: 0
+  streamingMipmapsPriority: 0
+  vTOnly: 0
+  ignoreMipmapLimit: 0
+  grayScaleToAlpha: 0
+  generateCubemap: 6
+  cubemapConvolution: 0
+  seamlessCubemap: 0
+  textureFormat: 1
+  maxTextureSize: 2048
+  textureSettings:
+    serializedVersion: 2
+    filterMode: 1
+    aniso: 1
+    mipBias: 0
+    wrapU: 1
+    wrapV: 1
+    wrapW: 1
+  nPOTScale: 0
+  lightmap: 0
+  compressionQuality: 50
+  spriteMode: 2
+  spriteExtrude: 1
+  spriteMeshType: 1
+  alignment: 0
+  spritePivot: {x: 0.5, y: 0.5}
+  spritePixelsToUnits: 100
+  spriteBorder: {x: 0, y: 0, z: 0, w: 0}
+  spriteGenerateFallbackPhysicsShape: 1
+  alphaUsage: 1
+  alphaIsTransparency: 1
+  spriteTessellationDetail: -1
+  textureType: 8
+  textureShape: 1
+  singleChannelComponent: 0
+  flipbookRows: 1
+  flipbookColumns: 1
+  maxTextureSizeSet: 0
+  compressionQualitySet: 0
+  textureFormatSet: 0
+  ignorePngGamma: 0
+  applyGammaDecoding: 0
+  swizzle: 50462976
+  cookieLightType: 0
+  platformSettings:
+  - serializedVersion: 4
+    buildTarget: DefaultTexturePlatform
+    maxTextureSize: 2048
+    resizeAlgorithm: 0
+    textureFormat: -1
+    textureCompression: 1
+    compressionQuality: 50
+    crunchedCompression: 0
+    allowsAlphaSplitting: 0
+    overridden: 0
+    ignorePlatformSupport: 0
+    androidETC2FallbackOverride: 0
+    forceMaximumCompressionQuality_BC6H_BC7: 0
+  - serializedVersion: 4
+    buildTarget: Standalone
+    maxTextureSize: 2048
+    resizeAlgorithm: 0
+    textureFormat: -1
+    textureCompression: 1
+    compressionQuality: 50
+    crunchedCompression: 0
+    allowsAlphaSplitting: 0
+    overridden: 0
+    ignorePlatformSupport: 0
+    androidETC2FallbackOverride: 0
+    forceMaximumCompressionQuality_BC6H_BC7: 0
+  - serializedVersion: 4
+    buildTarget: WebGL
+    maxTextureSize: 2048
+    resizeAlgorithm: 0
+    textureFormat: -1
+    textureCompression: 1
+    compressionQuality: 50
+    crunchedCompression: 0
+    allowsAlphaSplitting: 0
+    overridden: 0
+    ignorePlatformSupport: 0
+    androidETC2FallbackOverride: 0
+    forceMaximumCompressionQuality_BC6H_BC7: 0
+  spriteSheet:
+    serializedVersion: 2
+    sprites:
+    - serializedVersion: 2
+      name: GMTalk_0
+      rect:
+        serializedVersion: 2
+        x: 2
+        y: 447
+        width: 114
+        height: 103
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: aea337ed26957a5f0800000000000000
+      internalID: -745528932132766998
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: GMTalk_1
+      rect:
+        serializedVersion: 2
+        x: 119
+        y: 447
+        width: 114
+        height: 103
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 98a13ebfa151c7030800000000000000
+      internalID: 3493690616571959945
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: GMTalk_2
+      rect:
+        serializedVersion: 2
+        x: 236
+        y: 447
+        width: 114
+        height: 103
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 70b8243165d247a40800000000000000
+      internalID: 5364962903818668807
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: GMTalk_3
+      rect:
+        serializedVersion: 2
+        x: 353
+        y: 447
+        width: 114
+        height: 103
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: bd6ffc92a544d5770800000000000000
+      internalID: 8601106017386755803
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: GMTalk_4
+      rect:
+        serializedVersion: 2
+        x: 470
+        y: 447
+        width: 114
+        height: 103
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 5275e770058092150800000000000000
+      internalID: 5848214730933425957
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: GMTalk_5
+      rect:
+        serializedVersion: 2
+        x: 2
+        y: 336
+        width: 114
+        height: 103
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: a166fd81bb6425680800000000000000
+      internalID: -8767867755146811878
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: GMTalk_6
+      rect:
+        serializedVersion: 2
+        x: 119
+        y: 336
+        width: 114
+        height: 103
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 9e63e91b9e8cff3f0800000000000000
+      internalID: -864751697398974743
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: GMTalk_7
+      rect:
+        serializedVersion: 2
+        x: 236
+        y: 336
+        width: 114
+        height: 103
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: e060c656d13454590800000000000000
+      internalID: -7690666995130563058
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: GMTalk_8
+      rect:
+        serializedVersion: 2
+        x: 353
+        y: 336
+        width: 114
+        height: 103
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 3bc60ec743ebf38e0800000000000000
+      internalID: -1711440200734839629
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: GMTalk_9
+      rect:
+        serializedVersion: 2
+        x: 470
+        y: 336
+        width: 114
+        height: 103
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 6f94e73ab84863230800000000000000
+      internalID: 3618225085917055478
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: GMTalk_10
+      rect:
+        serializedVersion: 2
+        x: 2
+        y: 225
+        width: 114
+        height: 103
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 96994722877ca16f0800000000000000
+      internalID: -713038272196732567
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: GMTalk_11
+      rect:
+        serializedVersion: 2
+        x: 119
+        y: 225
+        width: 114
+        height: 103
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 30cd80de81c58d2c0800000000000000
+      internalID: -4406670973256279037
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: GMTalk_12
+      rect:
+        serializedVersion: 2
+        x: 236
+        y: 225
+        width: 114
+        height: 103
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: e7771b9de420d9100800000000000000
+      internalID: 116251703064491902
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: GMTalk_13
+      rect:
+        serializedVersion: 2
+        x: 353
+        y: 225
+        width: 114
+        height: 103
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 67fe4bc8475e5da10800000000000000
+      internalID: 1933703903765131126
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: GMTalk_14
+      rect:
+        serializedVersion: 2
+        x: 470
+        y: 225
+        width: 114
+        height: 103
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 633e32623a7dddf20800000000000000
+      internalID: 3449149985355195190
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: GMTalk_15
+      rect:
+        serializedVersion: 2
+        x: 2
+        y: 114
+        width: 114
+        height: 103
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: f77ac132c92b90470800000000000000
+      internalID: 8361410566863759231
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: GMTalk_16
+      rect:
+        serializedVersion: 2
+        x: 119
+        y: 114
+        width: 114
+        height: 103
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 5a748376d2f35cc10800000000000000
+      internalID: 2073132667711801253
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: GMTalk_17
+      rect:
+        serializedVersion: 2
+        x: 236
+        y: 114
+        width: 114
+        height: 103
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 27261142523782dd0800000000000000
+      internalID: -2510630188902948238
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: GMTalk_18
+      rect:
+        serializedVersion: 2
+        x: 353
+        y: 114
+        width: 114
+        height: 103
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 1332b9ed0766f34f0800000000000000
+      internalID: -846845569965284559
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: GMTalk_19
+      rect:
+        serializedVersion: 2
+        x: 470
+        y: 114
+        width: 114
+        height: 103
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: ee160d1ce6a80ce60800000000000000
+      internalID: 7980530748003213806
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: GMTalk_20
+      rect:
+        serializedVersion: 2
+        x: 2
+        y: 3
+        width: 114
+        height: 103
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: aa2a8cc514ba2b3e0800000000000000
+      internalID: -2039379384027536726
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: GMTalk_21
+      rect:
+        serializedVersion: 2
+        x: 119
+        y: 3
+        width: 114
+        height: 103
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 853f26d7dcb512ef0800000000000000
+      internalID: -134725575714344104
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: GMTalk_22
+      rect:
+        serializedVersion: 2
+        x: 236
+        y: 3
+        width: 114
+        height: 103
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 492eafdbb818e3280800000000000000
+      internalID: -9061662963035086188
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: GMTalk_23
+      rect:
+        serializedVersion: 2
+        x: 353
+        y: 3
+        width: 114
+        height: 103
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: c3280d735b6a55e20800000000000000
+      internalID: 3338757996020793916
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: GMTalk_24
+      rect:
+        serializedVersion: 2
+        x: 470
+        y: 3
+        width: 114
+        height: 103
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: e47a03bdb9b738a70800000000000000
+      internalID: 8828035603903850318
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    outline: []
+    customData: 
+    physicsShape: []
+    bones: []
+    spriteID: db4511f7e4387aa4399ff6236c6e203b
+    internalID: 0
+    vertices: []
+    indices: 
+    edges: []
+    weights: []
+    secondaryTextures: []
+    spriteCustomMetadata:
+      entries:
+      - key: SpriteEditor.SliceSettings
+        value: '{"sliceOnImport":false,"gridCellCount":{"x":1.0,"y":1.0},"gridSpriteSize":{"x":64.0,"y":64.0},"gridSpriteOffset":{"x":0.0,"y":0.0},"gridSpritePadding":{"x":0.0,"y":0.0},"pivot":{"x":0.5,"y":0.5},"pivotPixels":{"x":0.0,"y":0.0},"autoSlicingMethod":0,"spriteAlignment":0,"pivotUnitMode":0,"slicingType":0,"keepEmptyRects":false,"isAlternate":false}'
+    nameFileIdTable:
+      GMTalk_0: -745528932132766998
+      GMTalk_1: 3493690616571959945
+      GMTalk_10: -713038272196732567
+      GMTalk_11: -4406670973256279037
+      GMTalk_12: 116251703064491902
+      GMTalk_13: 1933703903765131126
+      GMTalk_14: 3449149985355195190
+      GMTalk_15: 8361410566863759231
+      GMTalk_16: 2073132667711801253
+      GMTalk_17: -2510630188902948238
+      GMTalk_18: -846845569965284559
+      GMTalk_19: 7980530748003213806
+      GMTalk_2: 5364962903818668807
+      GMTalk_20: -2039379384027536726
+      GMTalk_21: -134725575714344104
+      GMTalk_22: -9061662963035086188
+      GMTalk_23: 3338757996020793916
+      GMTalk_24: 8828035603903850318
+      GMTalk_3: 8601106017386755803
+      GMTalk_4: 5848214730933425957
+      GMTalk_5: -8767867755146811878
+      GMTalk_6: -864751697398974743
+      GMTalk_7: -7690666995130563058
+      GMTalk_8: -1711440200734839629
+      GMTalk_9: 3618225085917055478
+  mipmapLimitGroupName: 
+  pSDRemoveMatte: 0
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 

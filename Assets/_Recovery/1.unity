@@ -270,7 +270,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::TimerS
   conveyor: {fileID: 172897835}
-  interactObjHandling: {fileID: 519420033}
 --- !u!1 &61059764
 GameObject:
   m_ObjectHideFlags: 0
@@ -556,7 +555,6 @@ MonoBehaviour:
   sheep: {fileID: 5135471706076607534, guid: 7059eab3032ddd5439a6a4b7b6dd4382, type: 3}
   GH: {fileID: 349431761}
   conveyorSpeed: 1
-  spawnSpeed: 2.5
   timer: {fileID: 16950397}
 --- !u!4 &172897836
 Transform:
@@ -791,7 +789,7 @@ GameObject:
   - component: {fileID: 349431760}
   - component: {fileID: 349431761}
   - component: {fileID: 349431763}
-  - component: {fileID: 349431764}
+  - component: {fileID: 349431762}
   m_Layer: 0
   m_Name: GameHostSprite
   m_TagString: Untagged
@@ -861,7 +859,7 @@ SpriteRenderer:
   m_GlobalIlluminationMeshLod: 0
   m_SortingLayerID: 0
   m_SortingLayer: 0
-  m_SortingOrder: 2
+  m_SortingOrder: 1
   m_MaskInteraction: 0
   m_Sprite: {fileID: -745528932132766998, guid: 23ec98be9fc8e77438e5a3668a42ec8f, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
@@ -886,9 +884,26 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::GameHost
   speech: {fileID: 1348350080}
+  objHandle: {fileID: 519420033}
   speechBubble: {fileID: 1048686685}
   textSpeed: 0.05
   gameHostText: {fileID: 1842024805}
+--- !u!111 &349431762
+Animation:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 349431758}
+  m_Enabled: 1
+  serializedVersion: 4
+  m_Animation: {fileID: 0}
+  m_Animations: []
+  m_WrapMode: 0
+  m_PlayAutomatically: 1
+  m_AnimatePhysics: 0
+  m_UpdateMode: 0
+  m_CullingType: 0
 --- !u!95 &349431763
 Animator:
   serializedVersion: 7
@@ -911,24 +926,6 @@ Animator:
   m_AllowConstantClipSamplingOptimization: 1
   m_KeepAnimatorStateOnDisable: 0
   m_WriteDefaultValuesOnDisable: 0
---- !u!111 &349431764
-Animation:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 349431758}
-  m_Enabled: 1
-  serializedVersion: 4
-  m_Animation: {fileID: 0}
-  m_Animations:
-  - {fileID: 7400000, guid: 4c5f13c41d8485f4d80674f593c2c0ee, type: 2}
-  - {fileID: 7400000, guid: 30559acbcd6962e49a0db02292e1cdac, type: 2}
-  m_WrapMode: 0
-  m_PlayAutomatically: 1
-  m_AnimatePhysics: 0
-  m_UpdateMode: 0
-  m_CullingType: 0
 --- !u!1 &349544817
 GameObject:
   m_ObjectHideFlags: 0
@@ -1603,7 +1600,7 @@ MonoBehaviour:
       m_Action: F Key
       m_Flags: 0
     m_Flags: 0
-  GH: {fileID: 349431761}
+  GH: {fileID: 0}
   rotationSpeed: 45
   craft: {fileID: 1535512103}
   copyOfOldCells: []
@@ -1615,7 +1612,7 @@ AudioSource:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 519420028}
-  m_Enabled: 0
+  m_Enabled: 1
   serializedVersion: 4
   OutputAudioMixerGroup: {fileID: 0}
   m_audioClip: {fileID: 0}
@@ -1933,6 +1930,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::TasksHandling
   craftCheck: {fileID: 1535512103}
   sheepCheck: {fileID: 519420033}
+  budgetCheck: {fileID: 635765128}
 --- !u!1 &619394800
 GameObject:
   m_ObjectHideFlags: 0
@@ -2167,6 +2165,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 71e738bcfa4b8cf4a9bfad992081ec43, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::SpentBudget
+  budget: 5000
 --- !u!1 &666163325
 GameObject:
   m_ObjectHideFlags: 0
@@ -2795,7 +2794,7 @@ SpriteRenderer:
   m_GlobalIlluminationMeshLod: 0
   m_SortingLayerID: 0
   m_SortingLayer: 0
-  m_SortingOrder: 1
+  m_SortingOrder: 0
   m_MaskInteraction: 0
   m_Sprite: {fileID: 3052448189982474908, guid: 7119b873dd61c2a458d8cdfcbb6b8a53, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
@@ -4528,8 +4527,6 @@ MonoBehaviour:
   craftButton: {fileID: 61059767}
   allRecipes:
   - {fileID: 11400000, guid: 34602c3e3a182a84eb9588ec86ce2b15, type: 2}
-  - {fileID: 11400000, guid: 01723e6be8ebec14ab5eada864780d14, type: 2}
-  pullDown: {fileID: 546357656}
   GH: {fileID: 349431761}
   fireButtonIsLit: 0
   oneItemCrafted: 0
@@ -4937,13 +4934,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: 'blahblah blachlachlajf
-
-    ljslskjdsakd
-
-    skldjaklsdjslkad
-
-    jklskdj'
+  m_text: why so serious
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: a4b61e74f0a02fe4484616a4ae2e2daf, type: 2}
   m_sharedMaterial: {fileID: 2961211242024587641, guid: a4b61e74f0a02fe4484616a4ae2e2daf, type: 2}
@@ -4970,10 +4961,10 @@ MonoBehaviour:
   m_faceColor:
     serializedVersion: 2
     rgba: 4294967295
-  m_fontSize: 19.15
+  m_fontSize: 30
   m_fontSizeBase: 30
   m_fontWeight: 400
-  m_enableAutoSizing: 1
+  m_enableAutoSizing: 0
   m_fontSizeMin: 18
   m_fontSizeMax: 72
   m_fontStyle: 0

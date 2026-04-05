@@ -14,6 +14,7 @@ GameObject:
   - component: {fileID: 2151736461878685193}
   - component: {fileID: 5483913371632311655}
   - component: {fileID: 2288020339443579154}
+  - component: {fileID: 8032660162235885623}
   m_Layer: 3
   m_Name: Sheep
   m_TagString: Untagged
@@ -83,7 +84,7 @@ SpriteRenderer:
   m_GlobalIlluminationMeshLod: 0
   m_SortingLayerID: 0
   m_SortingLayer: 0
-  m_SortingOrder: 0
+  m_SortingOrder: 2
   m_MaskInteraction: 0
   m_Sprite: {fileID: -820791816159851585, guid: df11d6aafa2399f42bd0494b7a902d88, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
@@ -349,6 +350,8 @@ MonoBehaviour:
   height: 2
   width: 2
   scalingFactor: 0.55
+  isCraftedItem: 0
+  normalScale: {x: 0, y: 0, z: 0}
   shapeInCells: []
   occupiedCells: []
 --- !u!82 &2288020339443579154
@@ -448,3 +451,18 @@ AudioSource:
     m_PreInfinity: 2
     m_PostInfinity: 2
     m_RotationOrder: 4
+--- !u!114 &8032660162235885623
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5135471706076607534}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 2e705ccd3bfee6945a7d1ecb78a949ac, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::SheepBehavior
+  hopForce: 1
+  minWaitTime: 3
+  maxWaitTime: 5

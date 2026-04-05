@@ -83,7 +83,7 @@ SpriteRenderer:
   m_GlobalIlluminationMeshLod: 0
   m_SortingLayerID: 0
   m_SortingLayer: 0
-  m_SortingOrder: 0
+  m_SortingOrder: 2
   m_MaskInteraction: 0
   m_Sprite: {fileID: -8480286998687353954, guid: 0009ce46845e03b4384de3bbc4193516, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
@@ -185,6 +185,7 @@ MonoBehaviour:
   height: 1
   width: 1
   scalingFactor: 0.55
+  isCraftedItem: 0
   shapeInCells: []
   occupiedCells: []
 --- !u!82 &2129293119396518393

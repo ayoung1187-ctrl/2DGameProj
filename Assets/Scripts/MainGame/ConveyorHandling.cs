@@ -31,8 +31,13 @@ public class ConveyorHandling : MonoBehaviour
     [SerializeField] private GameObject decorativeTriangle;
     [SerializeField] private GameObject sheep;
 
+    [SerializeField] private GameHost GH;
+
+  
+
     [Header("Conveyor Belt Speed")]
-    [SerializeField] private float conveyorSpeed = 1f;
+    [SerializeField] private float conveyorSpeed = 2f;
+    [SerializeField] private float spawnSpeed = 3f;
 
     // Other variables
     private Vector3 itemSpawnPoint;
@@ -50,6 +55,7 @@ public class ConveyorHandling : MonoBehaviour
         itemSpawnPoint = new Vector3(11, -4.2f, 0);
         Invoke("SpawnItems", 1f);
         Invoke("StartTimer", 1f);
+        GH.HostComment("And so... LET THE GAME BEGIN!");
     }
 
     /*
@@ -95,8 +101,44 @@ public class ConveyorHandling : MonoBehaviour
      */
     void SpawnItems()
     {
-        //int randNum = Random.Range(0, 5);
-        int randNum = Random.Range(0, 2);
+        int randNum = Random.Range(0, 10);
+        //int randNum = Random.Range(0, 2);
+
+        switch (randNum)
+        {
+            case 0:
+            case 1:
+                itemInstance = Instantiate<GameObject>(decorativeTriangle);
+                itemInstance.transform.position = itemSpawnPoint;
+                spawnedItems.Add(itemInstance);
+                break;
+            case 2:
+            case 3:
+                itemInstance = Instantiate<GameObject>(woodenCrate);
+                itemInstance.transform.position = itemSpawnPoint;
+                spawnedItems.Add(itemInstance);
+                break;
+            case 4:
+            case 5:
+            case 6:
+                itemInstance = Instantiate<GameObject>(steelBeam);
+                itemInstance.transform.position = itemSpawnPoint;
+                spawnedItems.Add(itemInstance);
+                break;
+            case 7:
+                itemInstance = Instantiate<GameObject>(cosmicCircle);
+                itemInstance.transform.position = itemSpawnPoint;
+                spawnedItems.Add(itemInstance);
+                break;
+            case 8:
+            case 9:
+                itemInstance = Instantiate<GameObject>(sheep);
+                itemInstance.transform.position = itemSpawnPoint;
+                spawnedItems.Add(itemInstance);
+                break;
+            default:
+                return;
+        }
 
         /*switch (randNum)
         {
@@ -106,44 +148,13 @@ public class ConveyorHandling : MonoBehaviour
                 spawnedItems.Add(itemInstance);
                 break;
             case 1:
-                itemInstance = Instantiate<GameObject>(woodenCrate);
-                itemInstance.transform.position = itemSpawnPoint;
-                spawnedItems.Add(itemInstance);
-                break;
-            case 2:
                 itemInstance = Instantiate<GameObject>(steelBeam);
                 itemInstance.transform.position = itemSpawnPoint;
                 spawnedItems.Add(itemInstance);
                 break;
-            case 3:
-                itemInstance = Instantiate<GameObject>(cosmicCircle);
-                itemInstance.transform.position = itemSpawnPoint;
-                spawnedItems.Add(itemInstance);
-                break;
-            case 4:
-                itemInstance = Instantiate<GameObject>(sheep);
-                itemInstance.transform.position = itemSpawnPoint;
-                spawnedItems.Add(itemInstance);
-                break;
-            default:
-                return;
         }*/
 
-        switch (randNum)
-        {
-            case 0:
-                itemInstance = Instantiate<GameObject>(decorativeTriangle);
-                itemInstance.transform.position = itemSpawnPoint;
-                spawnedItems.Add(itemInstance);
-                break;
-            case 1:
-                itemInstance = Instantiate<GameObject>(steelBeam);
-                itemInstance.transform.position = itemSpawnPoint;
-                spawnedItems.Add(itemInstance);
-                break;
-        }
-
-            Invoke("SpawnItems", 5f);
+            Invoke("SpawnItems", spawnSpeed);
     }
 
     /*

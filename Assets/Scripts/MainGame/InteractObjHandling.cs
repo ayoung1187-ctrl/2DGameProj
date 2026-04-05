@@ -32,6 +32,8 @@ public class InteractObjHandling : MonoBehaviour
     [SerializeField] private InputAction rightHold;
     [SerializeField] private InputAction fKey;
 
+    [SerializeField] private GameHost GH;
+
     // Real object variables
     private Collider2D selectedCollider;
     private ObjectData item;
@@ -158,7 +160,7 @@ public class InteractObjHandling : MonoBehaviour
 
         if (item.GetIsOnGrid())
         {
-            ghostRb.transform.localScale = new Vector3(0.3f, 0.3f, 1f);
+            ghostRb.transform.localScale = item.normalScale;
         }
 
         // This helps prevent unwanted movement when dragging
@@ -243,10 +245,17 @@ public class InteractObjHandling : MonoBehaviour
                     }
                 }
 
+                if (item.isCraftedItem)
+                {
+                    craft.ResetGrid();
+                    item.isCraftedItem = false;
+                }
+
                 item.RB.transform.position = ghostRb.transform.position; // Move real object to ghost object position, rotation, and scale
                 item.RB.transform.rotation = ghostRb.transform.rotation;
                 item.RB.transform.localScale = ghostRb.transform.localScale;
-                item.RB.bodyType = RigidbodyType2D.Dynamic; // Make real object dynamic
+                if (item.objectID != "CosmicCircle") item.RB.bodyType = RigidbodyType2D.Dynamic; // Make real object dynamic
+                else item.RB.bodyType = RigidbodyType2D.Kinematic;
                 if (selectedCollider.isTrigger) selectedCollider.isTrigger = false;
                 if (item.GetIsOnGrid()) item.SetIsOnGrid(false);
             }
@@ -258,7 +267,8 @@ public class InteractObjHandling : MonoBehaviour
                 {
                     if (item.RB.bodyType != RigidbodyType2D.Kinematic) item.RB.bodyType = RigidbodyType2D.Kinematic;
                 }
-                else item.RB.bodyType = RigidbodyType2D.Dynamic; // Make real object dynamic
+                else if (item.objectID != "CosmicCircle") item.RB.bodyType = RigidbodyType2D.Dynamic; // Make real object dynamic
+                else item.RB.bodyType = RigidbodyType2D.Kinematic; // Make real object dynamic
             }
 
             else item.RB.bodyType = RigidbodyType2D.Kinematic;
@@ -282,7 +292,8 @@ public class InteractObjHandling : MonoBehaviour
             if (!tryPlace && item.GetIsBought() && !item.GetIsOnGrid())
             {
                 item.RB.transform.position = trackItem;
-                item.RB.bodyType = RigidbodyType2D.Dynamic;
+                if (item.objectID != "CosmicCircle") item.RB.bodyType = RigidbodyType2D.Dynamic; // Make real object dynamic
+                else item.RB.bodyType = RigidbodyType2D.Kinematic;
             }
             else if (!tryPlace && !item.GetIsOnGrid())
             {

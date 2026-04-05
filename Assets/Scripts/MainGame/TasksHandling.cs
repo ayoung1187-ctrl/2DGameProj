@@ -5,51 +5,58 @@ public class TasksHandling : MonoBehaviour
 {
     [SerializeField] private CraftingHandling craftCheck;
     [SerializeField] private InteractObjHandling sheepCheck;
-    [SerializeField] private SpentBudget budgetCheck;
+
+    static public bool isBudgetCheck = true;
+    static public bool isCraftCheck = false;
+    static public bool isSheepCheck = false;
 
     TextMeshProUGUI taskList;
     string fullText;
-    string[] linesNormal;
-    string[] lines;
+    string[] lines = new string[3];
+    string[] content = { "<indent=15%>Stay under budget.</indent>",
+                     "<indent=15%>Craft 1 new item</indent>",
+                     "<indent=15%>utilize sheep</indent>" };
 
     private void Start()
     {
         taskList = GetComponent<TextMeshProUGUI>();
-        fullText = taskList.text;
-        linesNormal = fullText.Split('\n');
-        lines = new string[linesNormal.Length];
-        linesNormal.CopyTo(lines, 0);
     }
 
     private void Update()
     {
-        if (taskList != null && lines != null)
+        if (taskList != null)
         {
-            if (SpentBudget.spentMoney < budgetCheck.budget)
+            if (SpentBudget.spentMoney < SpentBudget.budget)
             {
-                lines[0] = "<s>" + linesNormal[0] + "</s>";
+                lines[0] = "- <s>" + content[0] + "</s>";
+                isBudgetCheck = true;
             }
             else
             {
-                lines[0] = linesNormal[0];
+                lines[0] = "- " + content[0];
+                isBudgetCheck = false;
             }
 
             if (craftCheck.oneItemCrafted)
             {
-                lines[1] = "<s>" + linesNormal[1] + "</s>";
+                lines[1] = "- <s>" + content[1] + "</s>";
+                isCraftCheck = true;
             }
             else
             {
-                lines[1] = linesNormal[1];
+                isCraftCheck = false;
+                lines[1] = "- " + content[1];
             }
 
             if (sheepCheck.isSheepUtilized)
             {
-                lines[2] = "<s>" + linesNormal[2] + "</s>";
+                isSheepCheck = true;
+                lines[2] = "- <s>" + content[2] + "</s>";
             }
             else
             {
-                lines[2] = linesNormal[2];
+                isSheepCheck = false;
+                lines[2] = "- " + content[2];
             }
 
             taskList.text = lines[0] + "\n" + lines[1] + "\n" + lines[2];
