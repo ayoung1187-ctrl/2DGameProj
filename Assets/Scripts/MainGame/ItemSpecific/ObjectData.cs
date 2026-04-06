@@ -19,8 +19,6 @@ public class ObjectData : MonoBehaviour
     [Header("Item Parameters")]
     public string objectID;
     public int cost;
-    public int height;
-    public int width;
     public float scalingFactor;
 
     // Other variables

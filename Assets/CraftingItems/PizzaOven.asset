@@ -21,7 +21,5 @@ MonoBehaviour:
     cell: {x: 1, y: 0}
   - objectID: SteelBeam
     cell: {x: 1, y: 1}
-  - objectID: SteelBeam
-    cell: {x: 1, y: 2}
   - objectID: DecorativeTriangle
     cell: {x: 2, y: 1}

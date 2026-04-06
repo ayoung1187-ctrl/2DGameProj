@@ -36,8 +36,6 @@ public class CraftingHandling : MonoBehaviour
 
     private Vector3 instantiatePos;
 
-    public bool oneItemCrafted = false;
-
     static public int numCraftedItems = 0;
     static public int craftedItemsValue = 0;
 
@@ -281,8 +279,6 @@ public class CraftingHandling : MonoBehaviour
             {
                 Vector2Int normalizedGridCell = gridState[j].cell - gridMin;
 
-                Debug.Log("if (" + normalizedGridCell + " == " + normalizedRecipeCell + " && " + gridState[j].objectID + " == " + recipe.ingredients[i].objectID + ")");
-
                 if (normalizedGridCell == normalizedRecipeCell && gridState[j].objectID == recipe.ingredients[i].objectID)
                 {
                     found = true;
@@ -334,9 +330,9 @@ public class CraftingHandling : MonoBehaviour
         grid.gameObject.SetActive(false);
         craftButton.ChangeButtonImageOff();
         fireButtonIsLit = false;
-        if (!oneItemCrafted)
+        if (!TasksHandling.isCraftCheck)
         {
-            oneItemCrafted = true;
+            TasksHandling.isCraftCheck = true;
         }
 
         instantiatePos = gridDimensions.transform.position;

@@ -1,5 +1,6 @@
 using System.Collections;
 using TMPro;
+using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 using UnityEngine.UI;
@@ -21,7 +22,7 @@ public class EndGameScoring : MonoBehaviour
     private float textSpeed = 0.05f;
     private float timerAmt = 1f;
     private int val1;
-    // Start is called once before the first execution of Update after the MonoBehaviour is created
+
     void Start()
     {
         GH.HostComment("And that's time! Now let's see how you did.");
@@ -35,13 +36,16 @@ public class EndGameScoring : MonoBehaviour
         score[1].color = TasksHandling.isCraftCheck ? Color.forestGreen : Color.crimson;
         totalScore += TasksHandling.isCraftCheck ? 1000 : 0;
 
-        score[2].text = TasksHandling.isSheepCheck ? "+ 1000" : "+ 0";
+        /*score[2].text = TasksHandling.isRoomCheck ? "+ 1000" : "+ 0";
         score[2].color = TasksHandling.isSheepCheck ? Color.forestGreen : Color.crimson;
-        totalScore += TasksHandling.isSheepCheck ? 1000 : 0;
+        totalScore += TasksHandling.isSheepCheck ? 1000 : 0;*/
+
+        val1 = 1000 * RoomDetectionHandling.numOfRooms;
+        score[2].text = "+ " + val1;
 
         val1 = TasksHandling.isBudgetCheck ? 0 : SpentBudget.spentMoney - SpentBudget.budget;
         int val2 = CraftingHandling.numCraftedItems * CraftingHandling.craftedItemsValue - val1;
-        score[3].text = "+ " + val2;
+        score[3].text = (val2 > 0) ? "+ " + val2 : "+ 0";
         score[3].color = val2 > 0 ? Color.forestGreen : Color.crimson;
         totalScore += val2;
 

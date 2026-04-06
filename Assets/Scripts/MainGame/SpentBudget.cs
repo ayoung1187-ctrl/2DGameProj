@@ -21,7 +21,7 @@ public class SpentBudget : MonoBehaviour
     static public int spentMoney = 0; // Static so that it's easily accessible
     private int spentMoneyDisplay = 0;
 
-    static public int budget = 5000; // Public so that it's easily adjustable
+    static public int budget = 7500; // Public so that it's easily adjustable
     TextMeshProUGUI sb;
 
     void Start()

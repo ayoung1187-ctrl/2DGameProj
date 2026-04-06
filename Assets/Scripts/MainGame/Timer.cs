@@ -19,12 +19,15 @@ public class Timer : MonoBehaviour
     private int timerMins;
     private int timerSecs;
     [SerializeField] private ConveyorHandling conveyor;
-    [SerializeField] InteractObjHandling interactObjHandling;
+    [SerializeField] private InteractObjHandling interactObjHandling;
+    [SerializeField] private RoomDetectionHandling RDH;
+    [SerializeField] private SheepBehavior sheep;
+
     TextMeshProUGUI time;
 
     void Start()
     {
-        timerWholeSecs = 90;
+        timerWholeSecs = 150;
         time = GetComponent<TextMeshProUGUI>();
     }
 
@@ -46,9 +49,10 @@ public class Timer : MonoBehaviour
 
     void TimerEnded()
     {
-        Debug.Log("TIMES UP!");
         conveyor.enabled = false;
         interactObjHandling.enabled = false;
+        RDH.enabled = false;
+        sheep.enabled = false;
         Timer timer = GetComponent<Timer>();
         timer.enabled = false;
         SceneManager.LoadScene("EndGame", LoadSceneMode.Additive);

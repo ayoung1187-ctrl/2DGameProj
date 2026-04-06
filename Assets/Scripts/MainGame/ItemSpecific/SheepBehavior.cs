@@ -26,6 +26,7 @@ public class SheepBehavior : MonoBehaviour
             float waitTime = Random.Range(minWaitTime, maxWaitTime);
             yield return new WaitForSeconds(waitTime);
 
+            if (rb.bodyType != RigidbodyType2D.Dynamic) continue;
             if (objectData.GetIsOnGrid()) continue;
             if (!objectData.GetIsBought()) continue; // don't hop on conveyor
 

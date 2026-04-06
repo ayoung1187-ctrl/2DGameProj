@@ -3,19 +3,15 @@ using UnityEngine;
 
 public class TasksHandling : MonoBehaviour
 {
-    [SerializeField] private CraftingHandling craftCheck;
-    [SerializeField] private InteractObjHandling sheepCheck;
-
     static public bool isBudgetCheck = true;
     static public bool isCraftCheck = false;
-    static public bool isSheepCheck = false;
+    static public bool isRoomCheck = false;
 
     TextMeshProUGUI taskList;
-    string fullText;
     string[] lines = new string[3];
     string[] content = { "<indent=15%>Stay under budget.</indent>",
-                     "<indent=15%>Craft 1 new item</indent>",
-                     "<indent=15%>utilize sheep</indent>" };
+                     "<indent=15%>Craft 1 new item.</indent>",
+                     "<indent=15%>Create unique rooms.</indent>" };
 
     private void Start()
     {
@@ -37,7 +33,7 @@ public class TasksHandling : MonoBehaviour
                 isBudgetCheck = false;
             }
 
-            if (craftCheck.oneItemCrafted)
+            if (isCraftCheck)
             {
                 lines[1] = "- <s>" + content[1] + "</s>";
                 isCraftCheck = true;
@@ -48,14 +44,14 @@ public class TasksHandling : MonoBehaviour
                 lines[1] = "- " + content[1];
             }
 
-            if (sheepCheck.isSheepUtilized)
+            if (isRoomCheck)
             {
-                isSheepCheck = true;
+                isRoomCheck = true;
                 lines[2] = "- <s>" + content[2] + "</s>";
             }
             else
             {
-                isSheepCheck = false;
+                isRoomCheck = false;
                 lines[2] = "- " + content[2];
             }
 

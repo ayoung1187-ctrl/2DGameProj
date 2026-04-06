@@ -41,7 +41,6 @@ public class GameHost : MonoBehaviour
 
    public void HostComment(string comment)
     {
-        Debug.Log("HostComment called with: " + comment);
         animator.SetBool("Talking", true);
         gameHostText.text = comment;
         gameHostText.maxVisibleCharacters = 0;

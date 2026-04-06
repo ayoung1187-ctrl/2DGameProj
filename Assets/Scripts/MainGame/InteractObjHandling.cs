@@ -52,14 +52,15 @@ public class InteractObjHandling : MonoBehaviour
     [SerializeField] private CraftingHandling craft;
     public List<Vector2Int> copyOfOldCells = new List<Vector2Int>();
 
-    private Vector2 mouseWorldCoords;
+    public Vector2 mouseWorldCoords;
     private Vector2 mouseOffset;
     private Vector2 trackItem;
 
     private Collider2D buttonCollider;
 
     private bool isDragging = false;
-    public bool isSheepUtilized = false;
+
+    [SerializeField] private RoomDetectionHandling RDH;
 
     /*
      * Awake(): This function enables input actions and defines responses to clicking and letting go.
@@ -83,6 +84,7 @@ public class InteractObjHandling : MonoBehaviour
     private void Update()
     {
         if (isDragging == false) return;
+        if (RDH != null && RDH.isPlacing) return;
 
         mouseWorldCoords = mainCam.ScreenToWorldPoint(pointer.ReadValue<Vector2>());
         ContinueDrag();
@@ -93,6 +95,8 @@ public class InteractObjHandling : MonoBehaviour
      */
     public void StartDrag()
     {
+        if (RDH != null && RDH.isPlacing) return;
+
         // Convert from screen mouse position, to mouse position within the world
         mouseWorldCoords = mainCam.ScreenToWorldPoint(pointer.ReadValue<Vector2>());
         LayerMask objectLayer = LayerMask.GetMask("Objects"); // Make it so that this script will only detect building objects
@@ -106,7 +110,16 @@ public class InteractObjHandling : MonoBehaviour
             craft.CraftButtonIsPressed();
             return;
         }
-        
+
+        /*LayerMask roomButtonLayer = LayerMask.GetMask("RoomButton");
+        Collider2D roomButtonCollider = Physics2D.OverlapPoint(mouseWorldCoords, roomButtonLayer);
+
+        if (roomButtonCollider == null && RDH.isPlacing)
+        {
+            RDH.PlaceDotClick();
+            return;
+        }*/
+
         // If no object exists here, do nothing
         if (selectedCollider == null) return;
 
@@ -139,7 +152,6 @@ public class InteractObjHandling : MonoBehaviour
         {
             ObjectShapeCell clickedCell = childCollider.GetComponent<ObjectShapeCell>(); // Find the point of the object that the player is clicking on. Ex: (1,0) would be the middle portion of the horizontal beam.
             grabbedCell = clickedCell != null ? clickedCell.LocalCell : Vector2Int.zero; // If this object has relative grid data, find it's local cell. Else, it's local cell is (0,0)
-            //Debug.Log("Clicked on" + grabbedCell);
         }
         else
         {
@@ -206,7 +218,11 @@ public class InteractObjHandling : MonoBehaviour
         // Right-click or R is pressed
         if (rightHold.inProgress)
         {
-            ghostRb.rotation += rotationSpeed * Time.deltaTime;
+            //ghostRb.rotation += rotationSpeed * Time.deltaTime;
+            float angle = rotationSpeed * Time.deltaTime;
+            mouseOffset = Quaternion.Euler(0f, 0f, angle) * mouseOffset;
+            ghostRb.transform.position = mouseWorldCoords + mouseOffset;
+            ghostRb.rotation += angle;
         }
 
         // F key is pressed
@@ -239,10 +255,6 @@ public class InteractObjHandling : MonoBehaviour
                 if (!item.GetIsBought())
                 {
                     item.SetIsBought(true); // If item is not already bought, make it so()
-                    if (item.objectID == "Sheep")
-                    {
-                        isSheepUtilized = true;
-                    }
                 }
 
                 if (item.isCraftedItem)
@@ -345,6 +357,8 @@ public class InteractObjHandling : MonoBehaviour
         rightHold.Dispose();
         fKey.Dispose();
     }
+
+    public Vector2 GetMouseCoords() {  return mainCam.ScreenToWorldPoint(pointer.ReadValue<Vector2>()); }
 }
 
 
