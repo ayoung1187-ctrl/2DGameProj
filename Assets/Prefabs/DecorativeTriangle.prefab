@@ -85,7 +85,7 @@ SpriteRenderer:
   m_SortingLayer: 0
   m_SortingOrder: 2
   m_MaskInteraction: 0
-  m_Sprite: {fileID: -7260607956004917295, guid: 2c19c39f1968f484181e2f98b0c0f7e9, type: 3}
+  m_Sprite: {fileID: 2331519011556626858, guid: 5fa46185d886058439b43e616ca45b99, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 0
   m_FlipY: 0
@@ -159,8 +159,8 @@ PolygonCollider2D:
   m_Offset: {x: 0, y: 0}
   m_SpriteTilingProperty:
     border: {x: 0, y: 0, z: 0, w: 0}
-    pivot: {x: 0.5, y: 0.5}
-    oldSize: {x: 4.95, y: 3.32}
+    pivot: {x: 0.497212, y: 0.3901938}
+    oldSize: {x: 4.96, y: 4.24}
     newSize: {x: 1, y: 1}
     adaptiveTilingThreshold: 0.5
     drawMode: 0
@@ -186,12 +186,15 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::SquareS
   objectID: DecorativeTriangle
   cost: 250
-  height: 1
-  width: 1
   scalingFactor: 0.5
   isCraftedItem: 0
+  normalScale: {x: 0, y: 0, z: 0}
   shapeInCells: []
   occupiedCells: []
+  sprites:
+  - {fileID: 2331519011556626858, guid: 5fa46185d886058439b43e616ca45b99, type: 3}
+  - {fileID: -7260607956004917295, guid: 2c19c39f1968f484181e2f98b0c0f7e9, type: 3}
+  hostComment: 
 --- !u!82 &2873729549261042275
 AudioSource:
   m_ObjectHideFlags: 0

@@ -176,7 +176,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: '- Unique Room Points'
+  m_text: '- Unique Rooms Points'
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: a4b61e74f0a02fe4484616a4ae2e2daf, type: 2}
   m_sharedMaterial: {fileID: 2961211242024587641, guid: a4b61e74f0a02fe4484616a4ae2e2daf, type: 2}

@@ -2,10 +2,6 @@
  * Purpose: Holds data on if this cell is occupied, and if so by what.
  * 
  * Attached To: CraftingGrid
- * 
- * Last Edited: 3/29/26
- * 
- * !! There's a bug if you drag from crafting grid back to water and placement is valid, the light doesn't light back up !!
  */
 
 using System.Collections.Generic;
@@ -13,16 +9,28 @@ using UnityEngine;
 
 public class CraftingHandling : MonoBehaviour
 {
+    /*
+     * Field Variables
+     */
+
+    // 3x3 crafting grid storing references to placed objects
     private ObjectData[,] gridMat = new ObjectData[3,3];
 
+    [Header("Grid Info")]
     [SerializeField] private RectTransform grid;
     [SerializeField] private GameObject gridDimensions;
+
+    [Header("Craft Button and Pull Down Window Script")]
     [SerializeField] private CraftButton craftButton;
-    [SerializeField] private List<Recipe> allRecipes;
     [SerializeField] private PullDownWindowGameObject pullDown;
 
+    [Header("List of All Existing Recipes")]
+    [SerializeField] private List<Recipe> allRecipes;
+
+    [Header("Game Host Script")]
     [SerializeField] private GameHost GH;
 
+    // Grid Variables
     private int grabbedCellEquivalent = -1;
     private int axis;
     private int placeCol;
@@ -30,24 +38,30 @@ public class CraftingHandling : MonoBehaviour
 
     private List<Vector2Int> revisedCells;
 
-    public bool fireButtonIsLit = false;
-
+    // Other variables
+    [HideInInspector] public bool fireButtonIsLit = false;
     private GameObject craftableItem;
-
     private Vector3 instantiatePos;
 
+    // Booleans for end game scoring
     static public int numCraftedItems = 0;
     static public int craftedItemsValue = 0;
 
     void Start ()
     {
+        numCraftedItems = 0;
+        craftedItemsValue = 0;
         grid = GetComponent<RectTransform>();
     }
 
+    /*
+     * Attempts to place an object into the grid based on mouse position and shape.
+     */
     public bool TryPlaceObject(Vector2 mouseCoords, Quaternion objRotation, ObjectData inputObj, Vector2Int grabbedCell)
     {
         if (inputObj == null) return false;
 
+        // Reset variables
         grabbedCellEquivalent = -1;
         revisedCells = null;
         axis = 0;
@@ -57,11 +71,11 @@ public class CraftingHandling : MonoBehaviour
         placeCol = (int)(mouseCoords.x - grid.anchoredPosition.x); // 2.405 -> 2
         placeRow = (int)(mouseCoords.y - grid.anchoredPosition.y); // 1.205 -> 1
 
+        // Out of bounds check
         if (placeRow < 0 || placeRow > 2 || placeCol < 0 || placeCol > 2)
         {
             return false;
         }
-
 
         // If the object you're trying to place has a dimension of 1x1, simply check the primary slot
         if (inputObj.shapeInCells.Count <= 1)
@@ -87,6 +101,7 @@ public class CraftingHandling : MonoBehaviour
         // The object can only be rotated on the axes for the grid, so 90 degree angles
         axis = (int)Mathf.Round(objRotation.eulerAngles.z / 90f) * 90; // should return 0, 90, 180, or 270
 
+        // Find which cell in the object was grabbed
         for (int i = 0; i < shapeCells.Count; i++)
         {
             if (shapeCells[i] == grabbedCell)
@@ -95,13 +110,13 @@ public class CraftingHandling : MonoBehaviour
             }
         }
 
+        // If no grabbed cell, do nothing
         if (grabbedCellEquivalent == -1)
         {
             return false;
         }
 
-        // For steel beam that originally (0,0), (1,0), (2,0). 90 -> (0,0), (0,1), (0,2). 180 -> (2,0), (1,0), (0,0). 270 -> (0,2), (0,1), (0,0)
-        // For sheep with 2x2 grid, since it's symmetrical, you don't need to do anything
+        // Rotate shape depending on axis
         switch (axis)
         {
             case 90:
@@ -124,8 +139,6 @@ public class CraftingHandling : MonoBehaviour
                 grabbedCell = shapeCells[grabbedCellEquivalent];
                 break;
         }
-
-
 
         // Figure out, based on your primary slot and the relative cells of the shape, what other cells the program should be checking for vacancy
         revisedCells = GetRelativeCells(GetHoveredCell(), grabbedCell, shapeCells);
@@ -174,10 +187,8 @@ public class CraftingHandling : MonoBehaviour
 
         foreach (Vector2Int cell in shapeCells)
         {
-            Vector2Int relative = cell - grabbedCell; // (0,0) - (1,0)... = (-1, 0), (0, 0), (1, 0)
-            // at 90: (0,0), (0,1), (0,2) - (0,2) = (0,-2), (0,-1), (0,0)
-            result.Add(hoveredCell + relative); // (1,1) + (-1,0)... = (0,1), (1,1), (2,1)
-            // at 90: (1,2) + (0,-2), (0,-1), (0,0) = (1,0), (1, 1), (1, 2)
+            Vector2Int relative = cell - grabbedCell; // Offset relative to grabbed cell
+            result.Add(hoveredCell + relative); // Apply offset to hovered cell
         }
 
         return result;
@@ -187,9 +198,11 @@ public class CraftingHandling : MonoBehaviour
 
     public Vector2Int GetHoveredCell() { return new Vector2Int(placeCol, placeRow); }
 
+    /*
+     * Returns the world position of the center of a grid cell
+     */
     public Vector2 GetCellCenterLocal(int col, int row)
     {
-
         Vector2 center = gridDimensions.transform.position;
         Vector2 widthHeight = new Vector2(gridDimensions.transform.localScale.x / 3f, gridDimensions.transform.localScale.y / 3f);
 
@@ -197,14 +210,20 @@ public class CraftingHandling : MonoBehaviour
         return localPos;
     }
 
+    /*
+     * Finds the center position of all occupied cells (used for snapping objects)
+     */
     public Vector2 FindCenterSnap()
     {
         Vector2 posAdded = new Vector2(0f, 0f);
+
+        // If no complex dimensions, just return hovered cell center
         if (revisedCells == null)
         {
             return GetCellCenterLocal(placeCol, placeRow);
         }
 
+        // Average all occupied cell positions
         for (int i = 0; i < revisedCells.Count; i++)
         {
             posAdded += GetCellCenterLocal(revisedCells[i].x, revisedCells[i].y);
@@ -213,12 +232,18 @@ public class CraftingHandling : MonoBehaviour
         return new Vector2(posAdded.x / revisedCells.Count, posAdded.y / revisedCells.Count);
     }
 
+    /* 
+     * Clears a single slot
+     */
     public void ClearSlots(Vector2Int slot)
     {
         gridMat[slot.x, slot.y] = null;
         CheckAllRecipes();
     }
 
+    /*
+     * Clears entire grid and destroys objects
+     */
     private void ClearAllSlots()
     {
         for (int x = 0; x < 3; x++)
@@ -241,6 +266,9 @@ public class CraftingHandling : MonoBehaviour
         CheckAllRecipes();
     }
 
+    /*
+     * Checks if current grid matches a specific recipe
+     */
     public bool CheckRecipe(Recipe recipe)
     {
 
@@ -258,7 +286,7 @@ public class CraftingHandling : MonoBehaviour
             }
         }
 
-        if (gridState.Count != recipe.ingredients.Count) // If there's less than 3 items on the table, return
+        if (gridState.Count != recipe.ingredients.Count) // Must match ingredient count
         {
             return false;
         }
@@ -270,6 +298,7 @@ public class CraftingHandling : MonoBehaviour
         Vector2Int recipeMin = recipe.ingredients[0].cell;
         foreach (var e in recipe.ingredients) recipeMin = Vector2Int.Min(recipeMin, e.cell);
 
+        // Compare normalized positions and IDs
         for (int i = 0; i < recipe.ingredients.Count; i++)
         {
             Vector2Int normalizedRecipeCell = recipe.ingredients[i].cell - recipeMin;
@@ -291,7 +320,10 @@ public class CraftingHandling : MonoBehaviour
 
         return true;
     }
-    
+
+    /*
+     * Checks all recipes to see if any match current grid
+     */
     public void CheckAllRecipes()
     {
         foreach (Recipe recipe in allRecipes)
@@ -317,6 +349,9 @@ public class CraftingHandling : MonoBehaviour
         }
     }
 
+    /*
+     * Called when player presses craft button
+     */
     public void CraftButtonIsPressed()
     {
         // If the button is grayed out, do nothing
@@ -330,28 +365,35 @@ public class CraftingHandling : MonoBehaviour
         grid.gameObject.SetActive(false);
         craftButton.ChangeButtonImageOff();
         fireButtonIsLit = false;
+
+        // Update task system
         if (!TasksHandling.isCraftCheck)
         {
             TasksHandling.isCraftCheck = true;
         }
 
+        // Spawn crafted item
         instantiatePos = gridDimensions.transform.position;
         GameObject result = Instantiate(craftableItem);
         ObjectData resultOD = result.GetComponent<ObjectData>();
         resultOD.SetIsBought(true);
         result.transform.position = instantiatePos;
 
+        // Host comment
         GH.HostComment(resultOD.hostComment);
 
+        // Update scores
         numCraftedItems++;
         craftedItemsValue += resultOD.cost;
     }
 
+    // Returns whether grid UI is active
     public bool IsGridActive()
     {
         return grid.gameObject.activeSelf;
     }
 
+    // Resets grid UI and toggles dropdown
     public void ResetGrid()
     {
         grid.gameObject.SetActive(true);

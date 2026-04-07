@@ -271,7 +271,7 @@ SpriteRenderer:
   m_SortingLayer: 0
   m_SortingOrder: 2
   m_MaskInteraction: 0
-  m_Sprite: {fileID: 21300000, guid: 085a9ec4eb108894abae9a87a691a96d, type: 3}
+  m_Sprite: {fileID: -4374077040439161609, guid: 0193a4929caafd74994c328bafc6fa4a, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 0
   m_FlipY: 0
@@ -345,8 +345,8 @@ BoxCollider2D:
   m_Offset: {x: 0.012089729, y: 0.0000008046627}
   m_SpriteTilingProperty:
     border: {x: 0, y: 0, z: 0, w: 0}
-    pivot: {x: 0.5, y: 0.5}
-    oldSize: {x: 10.27, y: 1.32}
+    pivot: {x: 0.5, y: 0.23}
+    oldSize: {x: 10.29, y: 2.93}
     newSize: {x: 10.27, y: 1.32}
     adaptiveTilingThreshold: 0.5
     drawMode: 0
@@ -375,6 +375,9 @@ MonoBehaviour:
   - {x: 0, y: 0}
   - {x: 1, y: 0}
   occupiedCells: []
+  sprites:
+  - {fileID: -4374077040439161609, guid: 0193a4929caafd74994c328bafc6fa4a, type: 3}
+  - {fileID: 21300000, guid: 085a9ec4eb108894abae9a87a691a96d, type: 3}
   hostComment: 
 --- !u!82 &6357309257449228270
 AudioSource:

@@ -1,17 +1,16 @@
 using System.Collections;
 using TMPro;
-using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 using UnityEngine.UI;
 
-// Bonus = # of crafted items * added worth - overspent budget
 public class EndGameScoring : MonoBehaviour
 {
     [SerializeField] private TextMeshProUGUI[] text = new TextMeshProUGUI[6];
     [SerializeField] private TextMeshProUGUI[] score = new TextMeshProUGUI[5];
     [SerializeField] private TextMeshProUGUI letterGrade;
 
+    // Menu buttons
     [SerializeField] private Button buttonRetry;
     [SerializeField] private Button buttonQuit;
 
@@ -36,16 +35,15 @@ public class EndGameScoring : MonoBehaviour
         score[1].color = TasksHandling.isCraftCheck ? Color.forestGreen : Color.crimson;
         totalScore += TasksHandling.isCraftCheck ? 1000 : 0;
 
-        /*score[2].text = TasksHandling.isRoomCheck ? "+ 1000" : "+ 0";
-        score[2].color = TasksHandling.isSheepCheck ? Color.forestGreen : Color.crimson;
-        totalScore += TasksHandling.isSheepCheck ? 1000 : 0;*/
-
-        val1 = 1000 * RoomDetectionHandling.numOfRooms;
+        val1 = 1000 * RoomDetectionHandling.numOfRoomsFound;
         score[2].text = "+ " + val1;
+        score[2].color = val1 > 0 ? Color.forestGreen : Color.crimson;
+        totalScore += val1;
 
         val1 = TasksHandling.isBudgetCheck ? 0 : SpentBudget.spentMoney - SpentBudget.budget;
         int val2 = CraftingHandling.numCraftedItems * CraftingHandling.craftedItemsValue - val1;
-        score[3].text = (val2 > 0) ? "+ " + val2 : "+ 0";
+        if (val2 < 0) val2 = 0;
+        score[3].text = "+ " + val2;
         score[3].color = val2 > 0 ? Color.forestGreen : Color.crimson;
         totalScore += val2;
 
@@ -66,7 +64,7 @@ public class EndGameScoring : MonoBehaviour
             letterGrade.text = "B";
             letterGrade.color = Color.seaGreen;
         }
-        else if (totalScore > 4500)
+        else if (totalScore <= 4500)
         {
             letterGrade.text = "A";
             letterGrade.color = Color.forestGreen;
@@ -78,6 +76,7 @@ public class EndGameScoring : MonoBehaviour
         }
     }
 
+    // Enumerator used to keep from text overlapping, so that they can go one at a time
     private IEnumerator DisplayText()
     {
         text[0].maxVisibleCharacters = 0;
@@ -93,7 +92,7 @@ public class EndGameScoring : MonoBehaviour
         for (int i = 1; i < text.Length; i++)
         {
             int j = i - 1;
-            // type out the label text
+            // type out base text
             text[i].maxVisibleCharacters = 0;
             text[i].gameObject.SetActive(true);
             while (text[i].maxVisibleCharacters < text[i].text.Length)
@@ -119,6 +118,7 @@ public class EndGameScoring : MonoBehaviour
         // show letter grade after all rows done
         letterGrade.gameObject.SetActive(true);
 
+        // Host comments
         if (totalScore <= 1500)
         {
             GH.HostComment("Oof... you stink. Better luck next season.");
@@ -134,6 +134,7 @@ public class EndGameScoring : MonoBehaviour
         buttonQuit.gameObject.SetActive(true);
     }
 
+    // Button click functions
     public void OnRetryClick()
     {
         SceneManager.UnloadSceneAsync(2);

@@ -3,6 +3,7 @@ using UnityEngine;
 
 public class TasksHandling : MonoBehaviour
 {
+    // Static for end game scoring
     static public bool isBudgetCheck = true;
     static public bool isCraftCheck = false;
     static public bool isRoomCheck = false;
@@ -16,8 +17,12 @@ public class TasksHandling : MonoBehaviour
     private void Start()
     {
         taskList = GetComponent<TextMeshProUGUI>();
+        isBudgetCheck = true;
+        isCraftCheck = false;
+        isRoomCheck = false;
     }
 
+    // Constantly checks if any tasks are complete, and strikes them out if so
     private void Update()
     {
         if (taskList != null)

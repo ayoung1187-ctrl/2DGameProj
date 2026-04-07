@@ -19,6 +19,7 @@ public class SheepBehavior : MonoBehaviour
         StartCoroutine(HopRoutine());
     }
 
+    // Uses IEnumerator to better control timing. Waits a random amount of time, checks if the object is valid to hop, and hops if appropriate
     private IEnumerator HopRoutine()
     {
         while (true)

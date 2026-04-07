@@ -5,7 +5,7 @@
  * 
  * Class Function:
  * 
- * Last Edited: 3/19/26
+ * Note: This script ended up not getting used.
  */
 
 using UnityEngine;

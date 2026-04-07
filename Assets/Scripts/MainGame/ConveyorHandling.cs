@@ -101,7 +101,7 @@ public class ConveyorHandling : MonoBehaviour
      */
     void SpawnItems()
     {
-        int randNum = Random.Range(0, 10);
+        int randNum = Random.Range(0, 9);
         //int randNum = Random.Range(0, 2);
 
         switch (randNum)
@@ -131,7 +131,6 @@ public class ConveyorHandling : MonoBehaviour
                 spawnedItems.Add(itemInstance);
                 break;
             case 8:
-            case 9:
                 itemInstance = Instantiate<GameObject>(sheep);
                 itemInstance.transform.position = itemSpawnPoint;
                 spawnedItems.Add(itemInstance);

@@ -86,7 +86,7 @@ SpriteRenderer:
   m_SortingLayer: 0
   m_SortingOrder: 2
   m_MaskInteraction: 0
-  m_Sprite: {fileID: -820791816159851585, guid: df11d6aafa2399f42bd0494b7a902d88, type: 3}
+  m_Sprite: {fileID: 38629023301341669, guid: 2023e3ad20f769d439b689b840ba9123, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 0
   m_FlipY: 0
@@ -160,8 +160,8 @@ PolygonCollider2D:
   m_Offset: {x: 0, y: 0}
   m_SpriteTilingProperty:
     border: {x: 0, y: 0, z: 0, w: 0}
-    pivot: {x: 0.5, y: 0.5}
-    oldSize: {x: 6.52, y: 4.6}
+    pivot: {x: 0.43486366, y: 0.38167647}
+    oldSize: {x: 7.24, y: 5.93}
     newSize: {x: 1, y: 1}
     adaptiveTilingThreshold: 0.5
     drawMode: 0
@@ -347,13 +347,16 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::BuildItem
   objectID: Sheep
   cost: 75
-  height: 2
-  width: 2
   scalingFactor: 0.55
+  isCraftedItemOnGrid: 0
   isCraftedItem: 0
   normalScale: {x: 0, y: 0, z: 0}
   shapeInCells: []
   occupiedCells: []
+  sprites:
+  - {fileID: 38629023301341669, guid: 2023e3ad20f769d439b689b840ba9123, type: 3}
+  - {fileID: -820791816159851585, guid: df11d6aafa2399f42bd0494b7a902d88, type: 3}
+  hostComment: 
 --- !u!82 &2288020339443579154
 AudioSource:
   m_ObjectHideFlags: 0
@@ -367,7 +370,7 @@ AudioSource:
   m_audioClip: {fileID: 0}
   m_Resource: {fileID: 8300000, guid: 1cae7e2d015d85d4aa28830d4d8061ef, type: 3}
   m_PlayOnAwake: 0
-  m_Volume: 1
+  m_Volume: 0.6
   m_Pitch: 1
   Loop: 0
   Mute: 0

@@ -2,8 +2,6 @@
  * Purpose: Controls the timer, how it works, and how it's displayed.
  * 
  * Attached To: Timer
- * 
- * Last Edited: 3/25/26
  */
 
 using UnityEngine;
@@ -22,12 +20,13 @@ public class Timer : MonoBehaviour
     [SerializeField] private InteractObjHandling interactObjHandling;
     [SerializeField] private RoomDetectionHandling RDH;
     [SerializeField] private SheepBehavior sheep;
+    [SerializeField] private AudioSource AS;
 
     TextMeshProUGUI time;
 
     void Start()
     {
-        timerWholeSecs = 150;
+        timerWholeSecs = 60;
         time = GetComponent<TextMeshProUGUI>();
     }
 
@@ -47,12 +46,48 @@ public class Timer : MonoBehaviour
         time.text = string.Format("{0}:{1:D2}", timerMins, timerSecs);
     }
 
+    // Finds all object types that need to be disabled on game over, disables itself and loads next scene
     void TimerEnded()
     {
         conveyor.enabled = false;
         interactObjHandling.enabled = false;
         RDH.enabled = false;
-        sheep.enabled = false;
+
+        SheepBehavior[] sheep = FindObjectsByType<SheepBehavior>(FindObjectsSortMode.None);
+        foreach (MonoBehaviour s in sheep)
+        {
+            s.StopAllCoroutines();
+            s.enabled = false;
+        }
+
+        ObjectData[] obj = FindObjectsByType<ObjectData>(FindObjectsSortMode.None);
+        foreach (MonoBehaviour s in obj)
+        {
+            s.enabled = false;
+        }
+
+        AudioSource[] audioSources = FindObjectsByType<AudioSource>(FindObjectsSortMode.None);
+        foreach (AudioSource audio in audioSources)
+        {
+            if (audio.gameObject.tag != "MainCamera")
+            {
+                audio.Stop();
+                audio.enabled = false;
+            }
+        }
+
+        Rigidbody2D[] bodies2D = FindObjectsByType<Rigidbody2D>(FindObjectsSortMode.None);
+        foreach (Rigidbody2D rb in bodies2D)
+        {
+            if (rb.bodyType == RigidbodyType2D.Kinematic)
+            {
+                rb.linearVelocity = Vector2.zero;
+                rb.angularVelocity = 0f;
+            }
+            rb.simulated = false;
+        }
+
+
         Timer timer = GetComponent<Timer>();
         timer.enabled = false;
         SceneManager.LoadScene("EndGame", LoadSceneMode.Additive);

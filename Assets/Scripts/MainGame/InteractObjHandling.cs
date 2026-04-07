@@ -8,12 +8,8 @@
  *                 Additionally, if right-click or R is held during this, the object will rotate at a constant speed. If F is pressed, the item will invert horizontally.
  *                 When the left-click is released, the object's body type will change back to dynamic, its position, scale and rotation will match the ghost's, and the ghost will be destroyed.
  *             
- * Last Edited: 3/29/26
- *             
  * Edit 3/19/26: I realized I don't know if I want joint physics for dragging, so I updated this class to have drag be kinematic.
  *               The plan is to make the objects kinematic whilst on the conveyor belt and during drag, and dynamic otherwise.
- *               
- *               !!CHANGE START DRAG'S DESC!!, !!Change stop drag's desc!!, !!there's an issue where, if you drag object on grid back to water, it clears it from occupancy!!
  */
 
 using System.Collections.Generic;
@@ -32,6 +28,7 @@ public class InteractObjHandling : MonoBehaviour
     [SerializeField] private InputAction rightHold;
     [SerializeField] private InputAction fKey;
 
+    [Header("Game Host Script")]
     [SerializeField] private GameHost GH;
 
     // Real object variables
@@ -56,10 +53,12 @@ public class InteractObjHandling : MonoBehaviour
     private Vector2 mouseOffset;
     private Vector2 trackItem;
 
-    private Collider2D buttonCollider;
-
     private bool isDragging = false;
 
+    // Craft button
+    private Collider2D buttonCollider;
+
+    // Used to prevent dragging during room placement
     [SerializeField] private RoomDetectionHandling RDH;
 
     /*
@@ -111,15 +110,6 @@ public class InteractObjHandling : MonoBehaviour
             return;
         }
 
-        /*LayerMask roomButtonLayer = LayerMask.GetMask("RoomButton");
-        Collider2D roomButtonCollider = Physics2D.OverlapPoint(mouseWorldCoords, roomButtonLayer);
-
-        if (roomButtonCollider == null && RDH.isPlacing)
-        {
-            RDH.PlaceDotClick();
-            return;
-        }*/
-
         // If no object exists here, do nothing
         if (selectedCollider == null) return;
 
@@ -167,6 +157,13 @@ public class InteractObjHandling : MonoBehaviour
         
         ObjectData ghostBI = ghostInstance.GetComponent<ObjectData>();
         ghostCollider = ghostBI.GetComponent<Collider2D>();
+
+
+        // Just prevents the ghost from having the price tag if the object is bought
+        if (item.GetIsBought())
+        {
+            ghostBI.ToBoughtSprite();
+        }
 
         ghostRb = ghostBI.RB;
 
@@ -257,10 +254,10 @@ public class InteractObjHandling : MonoBehaviour
                     item.SetIsBought(true); // If item is not already bought, make it so()
                 }
 
-                if (item.isCraftedItem)
+                if (item.isCraftedItemOnGrid)
                 {
                     craft.ResetGrid();
-                    item.isCraftedItem = false;
+                    item.isCraftedItemOnGrid = false;
                 }
 
                 item.RB.transform.position = ghostRb.transform.position; // Move real object to ghost object position, rotation, and scale
@@ -295,6 +292,7 @@ public class InteractObjHandling : MonoBehaviour
         item = null;
     }
 
+    // Helper function in all cases of you're trying to place an object on the grid
     private void OnGridPlacement(CraftingHandling craft)
     {
         if (craft != null) // If grid has script, try placing it on the grid using CraftingHandling class, which returns a bool saying whether or not the placement succeeded
@@ -358,6 +356,7 @@ public class InteractObjHandling : MonoBehaviour
         fKey.Dispose();
     }
 
+    // Helper function for getting mouse coords
     public Vector2 GetMouseCoords() {  return mainCam.ScreenToWorldPoint(pointer.ReadValue<Vector2>()); }
 }
 
